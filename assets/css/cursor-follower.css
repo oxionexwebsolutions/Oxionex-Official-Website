@@ -1,0 +1,39 @@
+/* Cursor follower emoji styles */
+#cursor-follower {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translate3d(0,0,0) translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 999999;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+    color: var(--light-text);
+    font-size: 20px;
+    backdrop-filter: blur(6px);
+    transition: transform 180ms cubic-bezier(.2,.9,.2,1), opacity 180ms ease, filter 180ms ease;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    -webkit-user-select: none;
+    user-select: none;
+    mix-blend-mode: normal;
+    opacity: 0.98;
+}
+
+#cursor-follower.big {
+    transform: translate3d(0,0,0) translate(-50%, -50%) scale(1.6);
+}
+
+#cursor-follower.sad {
+    transform: translate3d(0,0,0) translate(-50%, -50%) scale(1.1);
+    filter: grayscale(0.15) brightness(0.95);
+}
+
+/* Slightly smaller on mobile to avoid covering content */
+@media (max-width: 576px) {
+    #cursor-follower { width: 30px; height: 30px; font-size: 18px; }
+}

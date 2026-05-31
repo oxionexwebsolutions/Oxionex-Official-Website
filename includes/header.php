@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="index.php">
+            <span class="navbar-logo-squares">
+                <span class="logo-square sq-1"></span>
+                <span class="logo-square sq-2"></span>
+                <span class="logo-square sq-3"></span>
+            </span>
+            <span class="navbar-brand-text">Pixelara</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link nav-scroll" data-target="#hero" href="index.php#hero">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-scroll" data-target="#services" href="index.php#services">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-scroll" data-target="#portfolio" href="index.php#portfolio">Portfolio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-scroll" data-target="#why-us" href="index.php#why-us">Why Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-scroll" data-target="#testimonials" href="index.php#testimonials">Testimonials</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-scroll" data-target="#process" href="index.php#process">Process</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-scroll" data-target="#contact" href="index.php#contact">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="start_project.php">Start Project</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Pixelara placeholder image">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f23"/>
+      <stop offset="50%" stop-color="#1f1147"/>
+      <stop offset="100%" stop-color="#0a0a15"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00d4ff"/>
+      <stop offset="50%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#ff006e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <circle cx="210" cy="180" r="150" fill="#00d4ff" opacity="0.14"/>
+  <circle cx="980" cy="620" r="220" fill="#ff006e" opacity="0.12"/>
+  <rect x="70" y="70" width="1060" height="660" rx="36" fill="none" stroke="url(#accent)" stroke-width="6" stroke-opacity="0.8"/>
+  <path d="M170 530 C300 390, 420 620, 560 470 S840 350, 1020 500" fill="none" stroke="url(#accent)" stroke-width="14" stroke-linecap="round" opacity="0.8"/>
+  <text x="600" y="335" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="84" font-weight="700" fill="#ffffff">Pixelara</text>
+  <text x="600" y="410" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" fill="#a0aec0">Premium digital experiences</text>
+  <text x="600" y="470" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" fill="#a0aec0">Placeholder image loaded</text>
+</svg>

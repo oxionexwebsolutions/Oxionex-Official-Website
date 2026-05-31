@@ -1,0 +1,97 @@
+# =============================================================================
+# PIXELARA WEB SOLUTIONS - PRODUCTION CONFIGURATION
+# =============================================================================
+
+# Enable mod_rewrite
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Remove www from URL
+    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+    
+    # Redirect HTTP to HTTPS (uncomment in production with SSL)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    # Prevent direct access to includes directory
+    RewriteRule ^includes/ - [F,L]
+    
+    # Prevent direct access to ajax directory (except intended calls)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+</IfModule>
+
+# =============================================================================
+# SECURITY HEADERS
+# =============================================================================
+
+# Prevent access to sensitive files
+<FilesMatch "(\.htaccess|\.env|\.git|\.gitignore|composer\.lock|package\.json|README\.md|TESTING_OPTIMIZATION_REPORT\.md)$">
+    Require all denied
+</FilesMatch>
+
+# Prevent directory listing
+Options -Indexes
+
+# =============================================================================
+# PERFORMANCE - COMPRESSION & CACHING
+# =============================================================================
+
+# Enable GZIP compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+</IfModule>
+
+# Browser caching
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Images
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    
+    # CSS
+    ExpiresByType text/css "access plus 30 days"
+    
+    # JavaScript
+    ExpiresByType application/javascript "access plus 30 days"
+    ExpiresByType text/javascript "access plus 30 days"
+    
+    # Fonts
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    
+    # Default
+    ExpiresDefault "access plus 1 week"
+</IfModule>
+
+# Add cache control headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "no-referrer-when-downgrade"
+</IfModule>
+
+# =============================================================================
+# MIME TYPES
+# =============================================================================
+
+AddType application/javascript js
+AddType application/json json
+AddType video/mp4 mp4
+AddType video/webm webm
+AddEncoding gzip svgz
+AddType image/svg+xml svg svgz

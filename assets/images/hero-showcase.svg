@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Pixelara digital showcase illustration">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#070713"/>
+      <stop offset="45%" stop-color="#101232"/>
+      <stop offset="100%" stop-color="#240a3d"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.85"/>
+      <stop offset="50%" stop-color="#7c3aed" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#ff006e" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" rx="48" fill="url(#bg)"/>
+  <circle cx="250" cy="180" r="160" fill="#00d4ff" opacity="0.15"/>
+  <circle cx="930" cy="210" r="190" fill="#7c3aed" opacity="0.18"/>
+  <circle cx="940" cy="690" r="230" fill="#ff006e" opacity="0.12"/>
+  <rect x="120" y="120" width="960" height="660" rx="40" fill="#0f1024" stroke="url(#panel)" stroke-width="5"/>
+  <rect x="165" y="165" width="870" height="55" rx="16" fill="#1b1d3d"/>
+  <circle cx="205" cy="193" r="10" fill="#00d4ff"/>
+  <circle cx="235" cy="193" r="10" fill="#7c3aed"/>
+  <circle cx="265" cy="193" r="10" fill="#ff006e"/>
+  <rect x="165" y="250" width="340" height="420" rx="28" fill="#13162f" stroke="#2c2f57"/>
+  <rect x="540" y="250" width="495" height="190" rx="28" fill="#13162f" stroke="#2c2f57"/>
+  <rect x="540" y="470" width="240" height="200" rx="28" fill="#13162f" stroke="#2c2f57"/>
+  <rect x="795" y="470" width="240" height="200" rx="28" fill="#13162f" stroke="#2c2f57"/>
+  <rect x="205" y="305" width="220" height="26" rx="13" fill="url(#panel)"/>
+  <rect x="205" y="360" width="170" height="16" rx="8" fill="#6b7297"/>
+  <rect x="205" y="390" width="150" height="16" rx="8" fill="#6b7297"/>
+  <rect x="205" y="430" width="120" height="120" rx="24" fill="#0f0f23" stroke="url(#panel)"/>
+  <path d="M225 515 L265 455 L300 485 L330 435 L350 465" fill="none" stroke="#00d4ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="285" y="578" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#a0aec0">Analytics</text>
+  <rect x="580" y="305" width="250" height="18" rx="9" fill="#6b7297"/>
+  <rect x="580" y="340" width="360" height="14" rx="7" fill="#37406b"/>
+  <rect x="580" y="368" width="310" height="14" rx="7" fill="#37406b"/>
+  <circle cx="635" cy="565" r="55" fill="none" stroke="#00d4ff" stroke-width="14"/>
+  <circle cx="890" cy="565" r="55" fill="none" stroke="#ff006e" stroke-width="14"/>
+  <text x="600" y="725" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="700" fill="#ffffff">Build. Design. Launch.</text>
+</svg>
