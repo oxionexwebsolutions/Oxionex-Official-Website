@@ -12,12 +12,25 @@ require_once 'includes/db.php';
 // Get projects for filter
 try {
     $projects = $pdo->query("SELECT * FROM projects ORDER BY featured DESC, sort_order ASC")->fetchAll(PDO::FETCH_ASSOC);
+    $services = $pdo->query("SELECT * FROM services WHERE is_active = 1 ORDER BY sort_order ASC, created_at DESC")->fetchAll(PDO::FETCH_ASSOC);
     $testimonials = $pdo->query("SELECT * FROM testimonials WHERE is_active = 1 ORDER BY created_at DESC")->fetchAll(PDO::FETCH_ASSOC);
     $statistics = $pdo->query("SELECT * FROM statistics ORDER BY sort_order ASC")->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $projects = [];
+    $services = [];
     $testimonials = [];
     $statistics = [];
+}
+
+if (empty($services)) {
+    $services = [
+        ['id' => 1, 'title' => 'Website Development', 'subtitle' => 'Build modern websites and web systems', 'icon' => 'fas fa-globe', 'points' => "Landing Page Development\nBusiness Website Development\nE-Commerce Website Development\nPortfolio Website Design\nCustom Web Applications\nAdmin Panel & Dashboard Development\nOnline Booking & Registration Systems"],
+        ['id' => 2, 'title' => 'Website Design & Optimization', 'subtitle' => 'Improve UI, speed, and site upkeep', 'icon' => 'fas fa-paint-brush', 'points' => "Website Redesign & UI/UX Improvement\nResponsive Mobile-Friendly Websites\nWebsite Speed & Security Optimization\nWebsite Maintenance & Management"],
+        ['id' => 3, 'title' => 'Social Media Management', 'subtitle' => 'Run pages, content, and designs', 'icon' => 'fas fa-share-alt', 'points' => "Social Media Page Handling\nInstagram Page Management\nFacebook Page Management\nContent Creation for Social Media\nSocial Media Post Design"],
+        ['id' => 4, 'title' => 'Video Production & Marketing', 'subtitle' => 'Create videos and drive traffic', 'icon' => 'fas fa-video', 'points' => "Reel Editing & Short Video Editing\nPromotional Video Editing\nAdvertisement Video Creation\nFacebook & Instagram Ads\nDigital Marketing Services\nSEO & Online Visibility Optimization\nWhatsApp Marketing Integration\nEmail Marketing Campaigns\nBrand Advertisement Campaigns"],
+        ['id' => 5, 'title' => 'Branding & Graphic Design', 'subtitle' => 'Build a strong visual identity', 'icon' => 'fas fa-palette', 'points' => "Branding & Identity Design\nLogo Design\nBrochure Design\nFlyer & Pamphlet Design\nBanner & Poster Design\nBusiness Card Design\nProduct Catalog Design\nCustom Templates & Creative Assets\nContent Writing for Websites & Brands"],
+        ['id' => 6, 'title' => 'Hosting & Technical Services', 'subtitle' => 'Deploy, secure, and support systems', 'icon' => 'fas fa-cube', 'points' => "Website Hosting & Domain Setup\nTechnical Support & IT Consultation\nStartup Online Presence Setup\nCreative Marketing Solutions\nCloud Hosting & Server Management\nSSL & Website Security Integration\nBug Fixing & Website Error Resolution\nAPI Integration & Automation\nDatabase Design & Integration (MySQL / SQL)\nAI-Powered Website Features & Automation\nOngoing Website Management & Support\nCustom Project Development for Businesses"],
+    ];
 }
 ?>
 <!DOCTYPE html>
@@ -184,154 +197,33 @@ try {
             </div>
 
             <div class="services-grid services-accordion-grid">
+                <?php foreach ($services as $service): ?>
+                <?php
+                    $serviceId = 'service-' . (int) $service['id'];
+                    $points = preg_split('/\R+/', trim($service['points'] ?? '')) ?: [];
+                ?>
                 <div class="service-card">
-                    <button class="service-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#service-web-dev" aria-expanded="false" aria-controls="service-web-dev">
+                    <button class="service-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#<?php echo $serviceId; ?>" aria-expanded="false" aria-controls="<?php echo $serviceId; ?>">
                         <span class="service-heading">
-                            <span class="service-icon"><i class="fas fa-globe"></i></span>
+                            <span class="service-icon"><i class="<?php echo htmlspecialchars($service['icon'] ?? 'fas fa-cube'); ?>"></i></span>
                             <span>
-                                <span class="service-kicker">Website Development</span>
-                                <span class="service-title-inline">Build modern websites and web systems</span>
+                                <span class="service-kicker"><?php echo htmlspecialchars($service['title']); ?></span>
+                                <span class="service-title-inline"><?php echo htmlspecialchars($service['subtitle']); ?></span>
                             </span>
                         </span>
                         <i class="fas fa-chevron-down service-arrow"></i>
                     </button>
-                    <div class="collapse service-collapse" id="service-web-dev">
+                    <div class="collapse service-collapse" id="<?php echo $serviceId; ?>">
                         <ul class="service-points">
-                            <li>Landing Page Development</li>
-                            <li>Business Website Development</li>
-                            <li>E-Commerce Website Development</li>
-                            <li>Portfolio Website Design</li>
-                            <li>Custom Web Applications</li>
-                            <li>Admin Panel & Dashboard Development</li>
-                            <li>Online Booking & Registration Systems</li>
+                            <?php foreach ($points as $point): ?>
+                                <?php if (trim($point) !== ''): ?>
+                                    <li><?php echo htmlspecialchars(trim($point)); ?></li>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         </ul>
                     </div>
                 </div>
-
-                <div class="service-card">
-                    <button class="service-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#service-design" aria-expanded="false" aria-controls="service-design">
-                        <span class="service-heading">
-                            <span class="service-icon"><i class="fas fa-paint-brush"></i></span>
-                            <span>
-                                <span class="service-kicker">Website Design & Optimization</span>
-                                <span class="service-title-inline">Improve UI, speed, and site upkeep</span>
-                            </span>
-                        </span>
-                        <i class="fas fa-chevron-down service-arrow"></i>
-                    </button>
-                    <div class="collapse service-collapse" id="service-design">
-                        <ul class="service-points">
-                            <li>Website Redesign & UI/UX Improvement</li>
-                            <li>Responsive Mobile-Friendly Websites</li>
-                            <li>Website Speed & Security Optimization</li>
-                            <li>Website Maintenance & Management</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="service-card">
-                    <button class="service-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#service-social" aria-expanded="false" aria-controls="service-social">
-                        <span class="service-heading">
-                            <span class="service-icon"><i class="fas fa-share-alt"></i></span>
-                            <span>
-                                <span class="service-kicker">Social Media Management</span>
-                                <span class="service-title-inline">Run pages, content, and designs</span>
-                            </span>
-                        </span>
-                        <i class="fas fa-chevron-down service-arrow"></i>
-                    </button>
-                    <div class="collapse service-collapse" id="service-social">
-                        <ul class="service-points">
-                            <li>Social Media Page Handling</li>
-                            <li>Instagram Page Management</li>
-                            <li>Facebook Page Management</li>
-                            <li>Content Creation for Social Media</li>
-                            <li>Social Media Post Design</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="service-card">
-                    <button class="service-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#service-video-marketing" aria-expanded="false" aria-controls="service-video-marketing">
-                        <span class="service-heading">
-                            <span class="service-icon"><i class="fas fa-video"></i></span>
-                            <span>
-                                <span class="service-kicker">Video Production & Marketing</span>
-                                <span class="service-title-inline">Create videos and drive traffic</span>
-                            </span>
-                        </span>
-                        <i class="fas fa-chevron-down service-arrow"></i>
-                    </button>
-                    <div class="collapse service-collapse" id="service-video-marketing">
-                        <ul class="service-points">
-                            <li>Reel Editing & Short Video Editing</li>
-                            <li>Promotional Video Editing</li>
-                            <li>Advertisement Video Creation</li>
-                            <li>Facebook & Instagram Ads</li>
-                            <li>Digital Marketing Services</li>
-                            <li>SEO & Online Visibility Optimization</li>
-                            <li>WhatsApp Marketing Integration</li>
-                            <li>Email Marketing Campaigns</li>
-                            <li>Brand Advertisement Campaigns</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="service-card">
-                    <button class="service-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#service-branding" aria-expanded="false" aria-controls="service-branding">
-                        <span class="service-heading">
-                            <span class="service-icon"><i class="fas fa-palette"></i></span>
-                            <span>
-                                <span class="service-kicker">Branding & Graphic Design</span>
-                                <span class="service-title-inline">Build a strong visual identity</span>
-                            </span>
-                        </span>
-                        <i class="fas fa-chevron-down service-arrow"></i>
-                    </button>
-                    <div class="collapse service-collapse" id="service-branding">
-                        <ul class="service-points">
-                            <li>Branding & Identity Design</li>
-                            <li>Logo Design</li>
-                            <li>Brochure Design</li>
-                            <li>Flyer & Pamphlet Design</li>
-                            <li>Banner & Poster Design</li>
-                            <li>Business Card Design</li>
-                            <li>Product Catalog Design</li>
-                            <li>Custom Templates & Creative Assets</li>
-                            <li>Content Writing for Websites & Brands</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="service-card">
-                    <button class="service-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#service-support" aria-expanded="false" aria-controls="service-support">
-                        <span class="service-heading">
-                            <span class="service-icon"><i class="fas fa-cube"></i></span>
-                            <span>
-                                <span class="service-kicker">Hosting & Technical Services</span>
-                                <span class="service-title-inline">Deploy, secure, and support systems</span>
-                            </span>
-                        </span>
-                        <i class="fas fa-chevron-down service-arrow"></i>
-                    </button>
-                    <div class="collapse service-collapse" id="service-support">
-                        <ul class="service-points">
-                            <li>Website Hosting & Domain Setup</li>
-                            <li>Technical Support & IT Consultation</li>
-                            <li>Startup Online Presence Setup</li>
-                            <li>Creative Marketing Solutions</li>
-                            <li>Cloud Hosting & Server Management</li>
-                            <li>NGINX Server Configuration & Deployment</li>
-                            <li>SSL & Website Security Integration</li>
-                            <li>Bug Fixing & Website Error Resolution</li>
-                            <li>API Integration & Automation</li>
-                            <li>Database Design & Integration (MySQL / SQL)</li>
-                            <li>AI-Powered Website Features & Automation</li>
-                            <li>Ongoing Website Management & Support</li>
-                            <li>Custom Project Development for Businesses</li>
-                        </ul>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>

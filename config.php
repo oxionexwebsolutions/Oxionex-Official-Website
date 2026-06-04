@@ -19,7 +19,7 @@ define('DB_PORT', 3306);             // Database port
 // EMAIL CONFIGURATION
 // =============================================================================
 // Admin email where inquiries are sent
-define('ADMIN_EMAIL', 'hello@oxionex.com');
+define('ADMIN_EMAIL', 'oxionexwebsolutions@gmail.com');
 
 // Sender email (must be valid for your mail server)
 define('SENDER_EMAIL', 'noreply@oxionex.com');
@@ -33,7 +33,7 @@ define('SUPPORT_EMAIL', 'support@oxionex.com');
 define('BUSINESS_NAME', 'Oxionex Web Solutions');
 define('BUSINESS_PHONE', '+91 7048811552');
 define('BUSINESS_WHATSAPP', '+917048811552');
-define('BUSINESS_EMAIL', 'hello@oxionex.com');
+define('BUSINESS_EMAIL', 'oxionexwebsolutions@gmail.com');
 define('BUSINESS_LOCATION', 'Rajkot, India');
 
 // Social media links

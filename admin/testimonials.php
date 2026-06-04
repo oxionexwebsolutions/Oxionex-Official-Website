@@ -1,14 +1,118 @@
 <?php
 session_start();
-if (!isset($_SESSION['admin_id'])) { header('Location: login.php'); exit; }
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
 require_once '../includes/db.php';
 require_once 'functions.php';
+
 verify_admin_session();
+
+$message = '';
+$error = '';
+$tableWarning = '';
+$editingTestimonial = null;
+
+if (isset($_GET['success'])) {
+    if ($_GET['success'] === 'added') {
+        $message = 'Testimonial added successfully.';
+    } elseif ($_GET['success'] === 'updated') {
+        $message = 'Testimonial updated successfully.';
+    } elseif ($_GET['success'] === 'deleted') {
+        $message = 'Testimonial deleted successfully.';
+    }
+}
+
+if (!$pdo) {
+    $error = 'Database connection error.';
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
+    $action = $_POST['action'] ?? 'save';
+
+    if ($action === 'delete') {
+        $deleteId = (int) ($_POST['id'] ?? 0);
+        try {
+            $stmt = $pdo->prepare('DELETE FROM testimonials WHERE id = ?');
+            $stmt->execute([$deleteId]);
+            header('Location: testimonials.php?success=deleted');
+            exit;
+        } catch (PDOException $exception) {
+            $error = 'Unable to delete testimonial.';
+            error_log('Delete testimonial error: ' . $exception->getMessage());
+        }
+    } else {
+        $testimonialId = (int) ($_POST['id'] ?? 0);
+        $clientName = trim($_POST['client_name'] ?? '');
+        $clientRole = trim($_POST['client_role'] ?? '');
+        $clientCompany = trim($_POST['client_company'] ?? '');
+        $clientImage = trim($_POST['client_image'] ?? '');
+        $rating = (int) ($_POST['rating'] ?? 5);
+        $messageText = trim($_POST['message'] ?? '');
+        $isActive = isset($_POST['is_active']) ? 1 : 0;
+
+        if ($clientName === '' || $messageText === '') {
+            $error = 'Client name and testimonial message are required.';
+        } else {
+            try {
+                if ($testimonialId > 0) {
+                    $stmt = $pdo->prepare('UPDATE testimonials SET client_name = ?, client_role = ?, client_company = ?, client_image = ?, rating = ?, message = ?, is_active = ? WHERE id = ?');
+                    $stmt->execute([$clientName, $clientRole, $clientCompany, $clientImage, $rating, $messageText, $isActive, $testimonialId]);
+                    header('Location: testimonials.php?success=updated');
+                    exit;
+                }
+
+                $stmt = $pdo->prepare('INSERT INTO testimonials (client_name, client_role, client_company, client_image, rating, message, is_active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())');
+                $stmt->execute([$clientName, $clientRole, $clientCompany, $clientImage, $rating, $messageText, $isActive]);
+                header('Location: testimonials.php?success=added');
+                exit;
+            } catch (PDOException $exception) {
+                $error = 'Unable to save testimonial.';
+                error_log('Save testimonial error: ' . $exception->getMessage());
+            }
+        }
+    }
+}
+
+$testimonials = [];
+if ($pdo) {
+    try {
+        $testimonials = $pdo->query('SELECT * FROM testimonials ORDER BY created_at DESC')->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $exception) {
+        $tableWarning = 'The testimonials table is missing or not accessible yet. Import the updated database.sql file.';
+        error_log('Load testimonials error: ' . $exception->getMessage());
+    }
+}
+
+if (isset($_GET['edit_id']) && $pdo) {
+    try {
+        $stmt = $pdo->prepare('SELECT * FROM testimonials WHERE id = ?');
+        $stmt->execute([(int) $_GET['edit_id']]);
+        $editingTestimonial = $stmt->fetch();
+    } catch (PDOException $exception) {
+        $error = 'Unable to load testimonial.';
+        error_log('Load testimonial error: ' . $exception->getMessage());
+    }
+}
+
+$formValues = [
+    'id' => $editingTestimonial['id'] ?? 0,
+    'client_name' => $editingTestimonial['client_name'] ?? ($_POST['client_name'] ?? ''),
+    'client_role' => $editingTestimonial['client_role'] ?? ($_POST['client_role'] ?? ''),
+    'client_company' => $editingTestimonial['client_company'] ?? ($_POST['client_company'] ?? ''),
+    'client_image' => $editingTestimonial['client_image'] ?? ($_POST['client_image'] ?? ''),
+    'rating' => $editingTestimonial['rating'] ?? ($_POST['rating'] ?? 5),
+    'message' => $editingTestimonial['message'] ?? ($_POST['message'] ?? ''),
+    'is_active' => isset($editingTestimonial['is_active']) ? (int) $editingTestimonial['is_active'] : (int) (($_POST['is_active'] ?? 1) ? 1 : 0),
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testimonials - Oxionex Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -22,7 +126,25 @@ verify_admin_session();
         .sidebar-menu li { margin-bottom: 10px; }
         .sidebar-menu a { display: flex; align-items: center; gap: 10px; padding: 12px 15px; color: #a0aec0; text-decoration: none; border-radius: 10px; transition: all 0.3s ease; }
         .sidebar-menu a:hover, .sidebar-menu a.active { background: rgba(0, 212, 255, 0.1); color: #00d4ff; }
-        .main-content { padding: 30px; }
+        .main-content { padding: 30px; overflow-y: auto; }
+        .form-card, .table-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; padding: 24px; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; margin-bottom: 8px; color: #00d4ff; font-weight: 600; }
+        input, textarea, select { width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; font-family: 'Inter', sans-serif; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: #00d4ff; box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); }
+        .btn-submit { background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%); border: none; color: #0f0f23; padding: 12px 22px; border-radius: 8px; cursor: pointer; font-weight: 700; }
+        .alert { border-radius: 10px; border: none; margin-bottom: 20px; }
+        .alert-success { background: rgba(16, 185, 129, 0.1); color: #6ee7b7; }
+        .alert-danger { background: rgba(239, 68, 68, 0.1); color: #fca5a5; }
+        .alert-warning { background: rgba(245, 158, 11, 0.1); color: #fcd34d; }
+        .table { color: #fff; }
+        .table thead th { color: #a0aec0; border-color: rgba(255, 255, 255, 0.1); }
+        .table td { border-color: rgba(255, 255, 255, 0.08); vertical-align: top; }
+        .testimonial-image { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(0, 212, 255, 0.35); }
+        .badge-status { display: inline-flex; align-items: center; padding: 0.35rem 0.65rem; border-radius: 999px; font-size: 0.85rem; font-weight: 700; }
+        .badge-on { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+        .badge-off { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
+        .stars { color: #fbbf24; }
     </style>
 </head>
 <body>
@@ -39,9 +161,131 @@ verify_admin_session();
             </ul>
         </div>
         <div class="main-content">
-            <h1>Testimonials Management</h1>
-            <p style="color: #a0aec0; margin-top: 20px;">Testimonials are currently managed via database. You can edit the testimonials table directly.</p>
-            <p style="color: #a0aec0;">To add/edit testimonials, update the <code>testimonials</code> table in your database.</p>
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+                <div>
+                    <h1 class="mb-2" style="font-size: 2rem; font-weight: 800;">Testimonials Management</h1>
+                    <p style="color: #a0aec0; margin: 0;">Publish client testimonials that appear on the homepage slider.</p>
+                </div>
+            </div>
+
+            <?php if ($message): ?><div class="alert alert-success"><?php echo htmlspecialchars($message); ?></div><?php endif; ?>
+            <?php if ($error): ?><div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div><?php endif; ?>
+            <?php if ($tableWarning): ?><div class="alert alert-warning"><?php echo htmlspecialchars($tableWarning); ?></div><?php endif; ?>
+
+            <div class="row g-4">
+                <div class="col-lg-5">
+                    <div class="form-card">
+                        <h2 style="font-size: 1.35rem; margin-bottom: 20px;"><?php echo $formValues['id'] ? 'Edit Testimonial' : 'Add Testimonial'; ?></h2>
+                        <form method="post">
+                            <input type="hidden" name="id" value="<?php echo (int) $formValues['id']; ?>">
+                            <input type="hidden" name="action" value="save">
+                            <div class="form-group">
+                                <label for="client_name">Client Name</label>
+                                <input type="text" id="client_name" name="client_name" required value="<?php echo htmlspecialchars($formValues['client_name']); ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="client_role">Client Role</label>
+                                <input type="text" id="client_role" name="client_role" value="<?php echo htmlspecialchars($formValues['client_role']); ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="client_company">Client Company</label>
+                                <input type="text" id="client_company" name="client_company" value="<?php echo htmlspecialchars($formValues['client_company']); ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="client_image">Client Image URL</label>
+                                <input type="url" id="client_image" name="client_image" value="<?php echo htmlspecialchars($formValues['client_image']); ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="rating">Rating</label>
+                                <select id="rating" name="rating">
+                                    <?php for ($rating = 5; $rating >= 1; $rating--): ?>
+                                        <option value="<?php echo $rating; ?>" <?php echo ((int) $formValues['rating'] === $rating) ? 'selected' : ''; ?>><?php echo $rating; ?> Stars</option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Testimonial Message</label>
+                                <textarea id="message" name="message" rows="7" required><?php echo htmlspecialchars($formValues['message']); ?></textarea>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="is_active" name="is_active" <?php echo $formValues['is_active'] ? 'checked' : ''; ?>>
+                                    <label class="form-check-label" for="is_active" style="color: #fff;">Active</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-submit w-100"><?php echo $formValues['id'] ? 'Update Testimonial' : 'Add Testimonial'; ?></button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="table-card">
+                        <h2 style="font-size: 1.35rem; margin-bottom: 20px;">Current Testimonials</h2>
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Client</th>
+                                        <th>Rating</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if ($testimonials): ?>
+                                        <?php foreach ($testimonials as $testimonial): ?>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-3">
+                                                        <?php if (!empty($testimonial['client_image'])): ?>
+                                                            <img src="<?php echo htmlspecialchars($testimonial['client_image']); ?>" alt="<?php echo htmlspecialchars($testimonial['client_name']); ?>" class="testimonial-image">
+                                                        <?php else: ?>
+                                                            <div class="testimonial-image d-flex align-items-center justify-content-center" style="background: rgba(255,255,255,0.08); color: #a0aec0;"><i class="fas fa-user"></i></div>
+                                                        <?php endif; ?>
+                                                        <div>
+                                                            <strong><?php echo htmlspecialchars($testimonial['client_name']); ?></strong><br>
+                                                            <small style="color: #a0aec0;"><?php echo htmlspecialchars(trim(($testimonial['client_role'] ?? '') . ($testimonial['client_company'] ? ' at ' . $testimonial['client_company'] : ''))); ?></small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="stars">
+                                                        <?php for ($i = 0; $i < (int) $testimonial['rating']; $i++): ?>
+                                                            <i class="fas fa-star"></i>
+                                                        <?php endfor; ?>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge-status <?php echo $testimonial['is_active'] ? 'badge-on' : 'badge-off'; ?>">
+                                                        <?php echo $testimonial['is_active'] ? 'Active' : 'Hidden'; ?>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <a href="testimonials.php?edit_id=<?php echo (int) $testimonial['id']; ?>" class="btn btn-sm btn-outline-primary mb-2">Edit</a>
+                                                    <form method="post" onsubmit="return confirm('Delete this testimonial?');" style="display:inline;">
+                                                        <input type="hidden" name="action" value="delete">
+                                                        <input type="hidden" name="id" value="<?php echo (int) $testimonial['id']; ?>">
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger mb-2">Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" style="border-top: none; padding-top: 0;">
+                                                    <div style="color: #a0aec0; font-style: italic;">"<?php echo htmlspecialchars($testimonial['message']); ?>"</div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="4" class="text-center py-4" style="color: #a0aec0;">No testimonials found yet. Add the first one using the form.</td>
+                                        </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
