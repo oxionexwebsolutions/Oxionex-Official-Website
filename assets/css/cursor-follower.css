@@ -37,3 +37,8 @@
 @media (max-width: 576px) {
     #cursor-follower { width: 30px; height: 30px; font-size: 18px; }
 }
+
+/* Hide cursor follower on touch devices (improves UX and prevents overlap) */
+@media (pointer: coarse) {
+    #cursor-follower { display: none !important; }
+}
