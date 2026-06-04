@@ -1,5 +1,5 @@
 /* ======================================================
-   PIXELARA WEB SOLUTIONS - MAIN STYLESHEET
+    OXIONEX WEB SOLUTIONS - MAIN STYLESHEET
    Premium, Modern, Animated Portfolio Website
    ====================================================== */
 
@@ -18,6 +18,18 @@
     --gray-text: #a0aec0;
     --border-color: rgba(255, 255, 255, 0.1);
     --glass-bg: rgba(255, 255, 255, 0.05);
+    --page-bg: #0f0f23;
+    --page-surface: #17172f;
+    --page-surface-strong: #0a0a15;
+    --page-text: #ffffff;
+    --page-muted: #a0aec0;
+    --page-border: rgba(255, 255, 255, 0.1);
+    --page-glass: rgba(255, 255, 255, 0.05);
+    --nav-bg: rgba(15, 15, 35, 0.8);
+    --preloader-bg: #0a0a15;
+    --preloader-brand: #ffffff;
+    --preloader-brand-muted: #a0aec0;
+    --toggle-bg: rgba(255, 255, 255, 0.06);
     
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, #00d4ff 0%, #7c3aed 50%, #ff006e 100%);
@@ -44,6 +56,32 @@
     --transition-slow: 0.5s ease-in-out;
 }
 
+:root[data-theme="light"] {
+    color-scheme: light;
+    --dark-bg: #f5f7fb;
+    --darker-bg: #ffffff;
+    --light-text: #0f172a;
+    --gray-text: #475569;
+    --border-color: rgba(15, 23, 42, 0.12);
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --page-bg: #f5f7fb;
+    --page-surface: #ffffff;
+    --page-surface-strong: #e9eef9;
+    --page-text: #0f172a;
+    --page-muted: #475569;
+    --page-border: rgba(15, 23, 42, 0.12);
+    --page-glass: rgba(255, 255, 255, 0.78);
+    --nav-bg: rgba(255, 255, 255, 0.9);
+    --preloader-bg: #ffffff;
+    --preloader-brand: #0f172a;
+    --preloader-brand-muted: #64748b;
+    --toggle-bg: rgba(15, 23, 42, 0.05);
+}
+
+html {
+    color-scheme: dark;
+}
+
 /* ======================================================
    GLOBAL STYLES
    ====================================================== */
@@ -63,8 +101,8 @@ html {
 
 body {
     font-family: var(--font-main);
-    background: var(--dark-bg);
-    color: var(--light-text);
+    background: var(--page-bg);
+    color: var(--page-text);
     line-height: 1.6;
     overflow-x: hidden;
     min-height: 100vh;
@@ -178,7 +216,7 @@ h3 {
 }
 
 p {
-    color: var(--gray-text);
+    color: var(--page-muted);
     margin-bottom: var(--spacing-sm);
 }
 
@@ -330,7 +368,7 @@ a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--darker-bg);
+    background: var(--preloader-bg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -342,7 +380,7 @@ a:hover {
     text-align: center;
 }
 
-/* Diagonal Square Loader matching PIXELARA logo */
+/* Diagonal Square Loader matching OXIONEX logo */
 .loader-diagonal {
     position: relative;
     width: 100px;
@@ -352,7 +390,7 @@ a:hover {
 
 .loader-square {
     position: absolute;
-    background: #000;
+    background: var(--primary-color);
     animation: diagonalPulse 1.2s ease-in-out infinite;
 }
 
@@ -401,7 +439,7 @@ a:hover {
 
 .preloader-logo {
     margin-bottom: 1.5rem;
-    color: #000;
+    color: var(--preloader-brand);
 }
 
 .preloader-logo p {
@@ -410,7 +448,7 @@ a:hover {
 }
 
 .preloader-text {
-    color: #666;
+    color: var(--preloader-brand-muted);
     font-weight: 600;
     letter-spacing: 0.05em;
     font-size: 0.95rem;
@@ -428,7 +466,7 @@ a:hover {
    ====================================================== */
 
 nav.navbar {
-    background: rgba(15, 15, 35, 0.8);
+    background: var(--nav-bg);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
     padding: 1rem 2rem;
@@ -500,6 +538,35 @@ nav.navbar {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+}
+
+.theme-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.65rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--page-border);
+    background: var(--toggle-bg);
+    color: var(--page-text);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: transform var(--transition-smooth), background var(--transition-smooth), border-color var(--transition-smooth), color var(--transition-smooth);
+}
+
+.theme-toggle-btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--primary-color);
+    color: var(--page-text);
+}
+
+.theme-toggle-icon {
+    font-size: 0.95rem;
+}
+
+.theme-toggle-label {
+    font-size: 0.85rem;
+    white-space: nowrap;
 }
 
 .navbar-nav .nav-link {
@@ -692,6 +759,26 @@ section {
     display: flex;
     gap: var(--spacing-md);
     flex-wrap: wrap;
+}
+
+/* Ensure project images maintain aspect ratio and are responsive on all devices */
+.project-image {
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+    display: block;
+}
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Improve touch responsiveness for interactive elements */
+button, a, .btn, .preview-btn, .theme-toggle-btn {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .hero-buttons .btn {

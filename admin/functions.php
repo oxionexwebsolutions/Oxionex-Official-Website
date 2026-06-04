@@ -1,6 +1,6 @@
 <?php
 /**
- * Pixelara Web Solutions - Admin Helper Functions
+ * Oxionex Web Solutions - Admin Helper Functions
  * Common functions for admin panel pages
  */
 

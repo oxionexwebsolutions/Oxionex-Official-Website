@@ -1,6 +1,6 @@
 <?php
 /**
- * Pixelara Web Solutions - Admin Login
+ * Oxionex Web Solutions - Admin Login
  * Secure authentication for admin panel
  */
 
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pixelara Admin - Login</title>
+    <title>Oxionex Admin - Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -171,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div style="position: absolute; width: 6px; height: 6px; background: #000; top: 30px; left: 36px;"></div>
                 </div>
                 <div>
-                    <h1 style="font-size: 28px; font-weight: 800; color: #000; margin: 0; letter-spacing: 1px;">PIXELARA</h1>
+                    <h1 style="font-size: 28px; font-weight: 800; color: #000; margin: 0; letter-spacing: 1px;">OXIONEX</h1>
                     <p style="color: #666; font-size: 12px; letter-spacing: 0.5px; margin: 4px 0 0 0;">ADMIN PANEL</p>
                 </div>
             </div>

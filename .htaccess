@@ -7,9 +7,9 @@
     RewriteEngine On
     RewriteBase /
     
-    # Remove www from URL
+    # Remove www from URL and redirect to HTTPS
     RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-    RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+    RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
     
     # Redirect HTTP to HTTPS (uncomment in production with SSL)
     # RewriteCond %{HTTPS} off
@@ -19,8 +19,7 @@
     RewriteRule ^includes/ - [F,L]
     
     # Prevent direct access to ajax directory (except intended calls)
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
+    # (removed stray conditions that had no target rule to avoid accidental rewrite side-effects)
 </IfModule>
 
 # =============================================================================
@@ -95,3 +94,4 @@ AddType video/mp4 mp4
 AddType video/webm webm
 AddEncoding gzip svgz
 AddType image/svg+xml svg svgz
+AddType text/css css

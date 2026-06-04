@@ -1,9 +1,9 @@
 -- =============================================
--- Pixelara Web Solutions - Database Schema
+-- Oxionex Web Solutions - Database Schema
 -- =============================================
 
-CREATE DATABASE IF NOT EXISTS pixelara_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE pixelara_db;
+CREATE DATABASE IF NOT EXISTS oxionex_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE oxionex_db;
 
 -- Projects table
 CREATE TABLE IF NOT EXISTS projects (
@@ -90,16 +90,16 @@ INSERT INTO projects (title, description, short_description, image, category, te
 
 -- Sample Testimonials
 INSERT INTO testimonials (client_name, client_role, client_company, client_image, rating, message) VALUES
-('Aryan Kapoor', 'CEO', 'TechVentures India', 'assets/images/client1.jpg', 5, 'Pixelara delivered an absolutely stunning website that exceeded our expectations. The animations are smooth, the design is premium, and our client inquiries increased by 300% after launch!'),
+('Aryan Kapoor', 'CEO', 'TechVentures India', 'assets/images/client1.jpg', 5, 'Oxionex delivered an absolutely stunning website that exceeded our expectations. The animations are smooth, the design is premium, and our client inquiries increased by 300% after launch!'),
 ('Sneha Malhotra', 'Founder', 'LuxeBoutique', 'assets/images/client2.jpg', 5, 'The eCommerce store they built for us is pure perfection. Fast, beautiful, and our customers love the experience. Sales went up significantly within the first month.'),
-('Rahul Sharma', 'Director', 'InnovateTech Solutions', 'assets/images/client3.jpg', 5, 'Professional, communicative, and incredibly talented. Pixelara turned our idea into a world-class web application. Highly recommended for any serious business.'),
-('Priya Desai', 'Marketing Head', 'GreenPath Organics', 'assets/images/client4.jpg', 5, 'We needed a complete digital transformation and Pixelara delivered beyond what we imagined. Our website now looks better than international competitors!'),
+('Rahul Sharma', 'Director', 'InnovateTech Solutions', 'assets/images/client3.jpg', 5, 'Professional, communicative, and incredibly talented. Oxionex turned our idea into a world-class web application. Highly recommended for any serious business.'),
+('Priya Desai', 'Marketing Head', 'GreenPath Organics', 'assets/images/client4.jpg', 5, 'We needed a complete digital transformation and Oxionex delivered beyond what we imagined. Our website now looks better than international competitors!'),
 ('Mohammed Al-Rashid', 'Owner', 'AlRashid Enterprises', 'assets/images/client5.jpg', 5, 'From consultation to launch, the entire experience was premium. The team is professional, deadline-oriented, and the final product is absolutely world-class.');
 
 -- Default admin user (password: admin123)
 -- Hash generated using: password_hash('admin123', PASSWORD_BCRYPT)
 INSERT INTO admin_users (username, password, email) VALUES
-('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@pixelara.com');
+('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@oxionex.com');
 
 -- Change default password in production!
 -- To generate new hash: php -r "echo password_hash('newpassword', PASSWORD_BCRYPT);"

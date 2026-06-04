@@ -178,14 +178,14 @@ try {
         @mail($admin_email, $subject, $body, $headers);
 
         // Send user confirmation email
-        $user_subject = 'Project Idea Received - Pixelara Web Solutions';
+        $user_subject = 'Project Idea Received - Oxionex Web Solutions';
         $user_body = '<html><body style="font-family:Arial,sans-serif; color:#333;">';
         $user_body .= '<h2 style="color:#00d4ff;">Thanks, ' . htmlspecialchars($client_name) . '!</h2>';
         $user_body .= '<p>We\'ve received your project idea and it\'s very important to us.</p>';
         $user_body .= '<p><strong>Our executive team will review your submission and reach out within 24 hours with a customized proposal.</strong></p>';
         $user_body .= '<p><em>In the meantime, feel free to reach us directly:</em></p>';
         $user_body .= '<p>Email: <a href="mailto:' . (defined('ADMIN_EMAIL') ? ADMIN_EMAIL : 'admin@localhost') . '">' . (defined('ADMIN_EMAIL') ? ADMIN_EMAIL : 'admin@localhost') . '</a><br/>Phone: +91 70488 11552</p>';
-        $user_body .= '<p>Best regards,<br/><strong>Pixelara Web Solutions Team</strong></p>';
+        $user_body .= '<p>Best regards,<br/><strong>Oxionex Web Solutions Team</strong></p>';
         $user_body .= '</body></html>';
 
         $user_headers = "MIME-Version: 1.0\r\n";

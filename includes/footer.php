@@ -1,6 +1,6 @@
 <?php
 /**
- * Pixelara Web Solutions - Global Footer
+ * Oxionex Web Solutions - Global Footer
  */
 ?>
 
@@ -9,17 +9,17 @@
         <div class="row g-4 mb-5">
             <div class="col-lg-4 col-md-6">
                 <div class="logo mb-3">
-                    <i class="fas fa-diamond"></i> Pixelara
+                    <i class="fas fa-diamond"></i> Oxionex
                 </div>
                 <p class="mb-4">Building premium digital experiences that convert visitors into loyal clients. We specialize in modern web design, development, and digital solutions.</p>
                 <div class="social-footer-links">
-                    <a href="https://instagram.com/pixelara" target="_blank" title="Instagram" class="social-link instagram">
+                    <a href="https://instagram.com/oxionex" target="_blank" title="Instagram" class="social-link instagram">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="https://twitter.com/pixelara" target="_blank" title="Twitter" class="social-link twitter">
+                    <a href="https://twitter.com/oxionex" target="_blank" title="Twitter" class="social-link twitter">
                         <i class="fab fa-twitter"></i>
                     </a>
-                    <a href="https://linkedin.com/company/pixelara" target="_blank" title="LinkedIn" class="social-link linkedin">
+                    <a href="https://linkedin.com/company/oxionex" target="_blank" title="LinkedIn" class="social-link linkedin">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
                     <a href="https://wa.me/918055555555" target="_blank" title="WhatsApp" class="social-link whatsapp">
@@ -51,7 +51,7 @@
             <div class="col-lg-3 col-md-6">
                 <h5>Contact</h5>
                 <ul>
-                    <li><a href="mailto:Pixelarawebsolutions@gmail.com"><i class="fas fa-envelope me-2"></i>Pixelarawebsolutions@gmail.com</a></li>
+                    <li><a href="mailto:hello@oxionex.com"><i class="fas fa-envelope me-2"></i>hello@oxionex.com</a></li>
                     <li><a href="tel:+917048811552"><i class="fas fa-phone me-2"></i>+91 70488 11552</a></li>
                     <li><a href="https://wa.me/917048811552" target="_blank"><i class="fab fa-whatsapp me-2"></i>WhatsApp: +91 70488 11552</a></li>
                     <li><i class="fas fa-map-marker-alt me-2"></i>Rajkot, Gujarat, India</li>
@@ -61,7 +61,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; <?php echo date('Y'); ?> Pixelara Web Solutions. All rights reserved. | <a href="admin/">Admin</a></p>
+            <p>&copy; <?php echo date('Y'); ?> Oxionex Web Solutions. All rights reserved. | <a href="admin/">Admin</a></p>
         </div>
     </div>
 </footer>

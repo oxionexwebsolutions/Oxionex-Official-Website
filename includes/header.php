@@ -6,8 +6,12 @@
                 <span class="logo-square sq-2"></span>
                 <span class="logo-square sq-3"></span>
             </span>
-            <span class="navbar-brand-text">Pixelara</span>
+            <span class="navbar-brand-text">Oxionex</span>
         </a>
+        <button type="button" id="themeToggle" class="theme-toggle-btn ms-auto me-2" aria-label="Toggle dark and light theme" aria-pressed="false">
+            <i class="fas fa-moon theme-toggle-icon" aria-hidden="true"></i>
+            <span class="theme-toggle-label">Light mode</span>
+        </button>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

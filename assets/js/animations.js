@@ -1,5 +1,5 @@
 /* ======================================================
-   PIXELARA - ADVANCED ANIMATIONS
+    OXIONEX - ADVANCED ANIMATIONS
    GSAP and ScrollTrigger animations for premium effects
    ====================================================== */
 

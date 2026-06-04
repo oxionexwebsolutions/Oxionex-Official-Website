@@ -1,6 +1,6 @@
 <?php
 /**
- * Pixelara Web Solutions - Get Statistics AJAX Handler
+ * Oxionex Web Solutions - Get Statistics AJAX Handler
  * Fetches current statistics for the website
  */
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Pixelara Web Solutions - Configuration File
+ * Oxionex Web Solutions - Configuration File
  * Store all sensitive configuration in one place
  * 
  * IMPORTANT: Update these values before going to production!
@@ -9,37 +9,37 @@
 // =============================================================================
 // DATABASE CONFIGURATION
 // =============================================================================
-define('DB_HOST', 'localhost');      // Database host
-define('DB_USER', 'root');           // Database username
-define('DB_PASS', '');               // Database password (empty for local dev)
-define('DB_NAME', 'pixelara_db');    // Database name
+define('DB_HOST', 'sql206.infinityfree.com');      // Database host
+define('DB_USER', 'if0_42061746');                 // Database username
+define('DB_PASS', 'OxionexWebSol');                // Database password
+define('DB_NAME', 'if0_42061746_oxionexwebsloutions'); // Database name
 define('DB_PORT', 3306);             // Database port
 
 // =============================================================================
 // EMAIL CONFIGURATION
 // =============================================================================
 // Admin email where inquiries are sent
-define('ADMIN_EMAIL', 'hello@pixelara.com');
+define('ADMIN_EMAIL', 'hello@oxionex.com');
 
 // Sender email (must be valid for your mail server)
-define('SENDER_EMAIL', 'noreply@pixelara.com');
+define('SENDER_EMAIL', 'noreply@oxionex.com');
 
 // Support email for user-facing messages
-define('SUPPORT_EMAIL', 'support@pixelara.com');
+define('SUPPORT_EMAIL', 'support@oxionex.com');
 
 // =============================================================================
 // BUSINESS CONFIGURATION
 // =============================================================================
-define('BUSINESS_NAME', 'Pixelara Web Solutions');
-define('BUSINESS_PHONE', '+91 805 555 5555');
-define('BUSINESS_WHATSAPP', '+918055555555');
-define('BUSINESS_EMAIL', 'hello@pixelara.com');
-define('BUSINESS_LOCATION', 'Bangalore, India');
+define('BUSINESS_NAME', 'Oxionex Web Solutions');
+define('BUSINESS_PHONE', '+91 7048811552');
+define('BUSINESS_WHATSAPP', '+917048811552');
+define('BUSINESS_EMAIL', 'hello@oxionex.com');
+define('BUSINESS_LOCATION', 'Rajkot, India');
 
 // Social media links
-define('SOCIAL_INSTAGRAM', 'https://instagram.com/pixelara');
-define('SOCIAL_TWITTER', 'https://twitter.com/pixelara');
-define('SOCIAL_LINKEDIN', 'https://linkedin.com/company/pixelara');
+define('SOCIAL_INSTAGRAM', 'https://instagram.com/oxionex');
+define('SOCIAL_TWITTER', 'https://twitter.com/oxionex');
+define('SOCIAL_LINKEDIN', 'https://linkedin.com/company/oxionex');
 
 // =============================================================================
 // SECURITY CONFIGURATION
@@ -57,7 +57,7 @@ define('LOCKOUT_DURATION', 900);
 // ERROR HANDLING
 // =============================================================================
 // Show errors (false in production)
-define('DEBUG_MODE', false);
+define('DEBUG_MODE', true);
 
 // Log errors to file
 define('LOG_ERRORS', true);
@@ -77,6 +77,19 @@ define('RATE_LIMIT_REQUESTS', 60);
 // =============================================================================
 // Maximum file upload size (in bytes) - 5MB
 define('MAX_UPLOAD_SIZE', 5242880);
+
+// =============================================================================
+// DEBUG / ERROR REPORTING
+// =============================================================================
+// Enable full error reporting during troubleshooting. Set DEBUG_MODE to true
+// to display errors on-page. In production set DEBUG_MODE to false.
+error_reporting(E_ALL);
+if (defined('DEBUG_MODE') && DEBUG_MODE) {
+	ini_set('display_errors', '1');
+	ini_set('display_startup_errors', '1');
+} else {
+	ini_set('display_errors', '0');
+}
 
 // Allowed file types for uploads
 define('ALLOWED_UPLOAD_TYPES', ['jpg', 'jpeg', 'png', 'gif', 'webp']);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Pixelara Web Solutions - Contact Form AJAX Handler
+ * Oxionex Web Solutions - Contact Form AJAX Handler
  * Handles contact form submissions and sends email notifications
  */
 
@@ -131,7 +131,7 @@ try {
         $headers .= "Content-type: text/html; charset=UTF-8" . "\r\n";
         $headers .= "From: " . $sender_email . "\r\n";
         $headers .= "Reply-To: " . $email . "\r\n";
-        $headers .= "X-Mailer: Pixelara Web Solutions" . "\r\n";
+        $headers .= "X-Mailer: Oxionex Web Solutions" . "\r\n";
         
         // Send email (use environment variable or config in production)
         @mail($admin_email, $subject, $email_body, $headers);

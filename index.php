@@ -1,5 +1,5 @@
 <?php
-// Pixelara Web Solutions - Main Portfolio Website
+// Oxionex Web Solutions - Main Portfolio Website
 // Modern, Premium, Highly Animated Portfolio
 
 session_start();
@@ -25,9 +25,21 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Pixelara Web Solutions - Premium Web Design, Development, and Digital Solutions. We create stunning websites that convert visitors into paying clients.">
+    <meta name="description" content="Oxionex Web Solutions - Premium Web Design, Development, and Digital Solutions. We create stunning websites that convert visitors into paying clients.">
     <meta name="keywords" content="web design, web development, eCommerce, admin dashboard, SaaS, digital agency">
-    <meta name="author" content="Pixelara Web Solutions">
+    <meta name="author" content="Oxionex Web Solutions">
+
+    <script>
+        (function() {
+            try {
+                var storedTheme = localStorage.getItem('oxionex-theme');
+                var preferredTheme = storedTheme === 'light' || storedTheme === 'dark'
+                    ? storedTheme
+                    : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+                document.documentElement.setAttribute('data-theme', preferredTheme);
+            } catch (e) {}
+        })();
+    </script>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
@@ -53,7 +65,7 @@ try {
     <link rel="stylesheet" href="assets/css/cursor-follower.css">
     <link rel="stylesheet" href="assets/css/project-preview.css">
     
-    <title>Pixelara Web Solutions - Premium Web Design & Development</title>
+    <title>Oxionex Web Solutions - Premium Web Design & Development</title>
 </head>
 <body>
     <!-- Preloader -->
@@ -66,7 +78,7 @@ try {
                 <div class="loader-square square-4"></div>
             </div>
             <div class="preloader-logo">
-                <p style="font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; margin: 0;">PIXELARA</p>
+                <p style="font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; margin: 0;">OXIONEX</p>
                 <p style="font-size: 0.85rem; letter-spacing: 1px; color: #999; margin: 0;">WEB SOLUTIONS</p>
             </div>
             <p class="preloader-text">Building your experience...</p>
@@ -395,7 +407,7 @@ try {
     <section id="why-us" class="why-us-section py-5">
         <div class="container">
             <div class="section-header text-center mb-5">
-                <span class="section-label">WHY PIXELARA</span>
+                <span class="section-label">WHY OXIONEX</span>
                 <h2 class="section-title">Why Choose Us</h2>
                 <p class="section-subtitle">We deliver more than just websites - we deliver results</p>
             </div>
@@ -675,7 +687,7 @@ try {
                             </div>
                             <div class="contact-details">
                                 <h4>Email</h4>
-                                <p><a href="mailto:Pixelarawebsolutions@gmail.com">Pixelarawebsolutions@gmail.com</a></p>
+                                <p><a href="mailto:hello@oxionex.com">hello@oxionex.com</a></p>
                             </div>
                         </div>
 
@@ -702,13 +714,13 @@ try {
                         <div class="contact-socials mt-4">
                             <p class="mb-3">Connect With Us</p>
                             <div class="social-links">
-                                <a href="https://instagram.com/pixelara" target="_blank" class="social-link">
+                                <a href="https://instagram.com/oxionex" target="_blank" class="social-link">
                                     <i class="fab fa-instagram"></i>
                                 </a>
-                                <a href="https://twitter.com/pixelara" target="_blank" class="social-link">
+                                <a href="https://twitter.com/oxionex" target="_blank" class="social-link">
                                     <i class="fab fa-twitter"></i>
                                 </a>
-                                <a href="https://linkedin.com/company/pixelara" target="_blank" class="social-link">
+                                <a href="https://linkedin.com/company/oxionex" target="_blank" class="social-link">
                                     <i class="fab fa-linkedin-in"></i>
                                 </a>
                                 <a href="https://wa.me/917048811552" target="_blank" class="social-link">

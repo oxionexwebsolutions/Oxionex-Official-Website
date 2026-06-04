@@ -1,6 +1,6 @@
 <?php
 /**
- * Pixelara Web Solutions - Admin Logout
+ * Oxionex Web Solutions - Admin Logout
  */
 
 session_start();

@@ -1,5 +1,5 @@
 /* ======================================================
-   PIXELARA - PARTICLE ANIMATION ENGINE
+    OXIONEX - PARTICLE ANIMATION ENGINE
    Canvas-based particle effects for hero section
    ====================================================== */
 
