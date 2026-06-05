@@ -180,6 +180,37 @@
         offcanvas.classList.remove('show');
     }
 
+    function initializeHamburgerMenu() {
+        var hamburger = document.querySelector('.hamburger');
+        var mobileMenu = document.querySelector('.mobile-menu');
+        if (!hamburger || !mobileMenu || hamburger.dataset.bound === 'true') return;
+
+        hamburger.dataset.bound = 'true';
+
+        function setMenuState(isOpen) {
+            mobileMenu.classList.toggle('open', isOpen);
+            mobileMenu.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+            hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            document.documentElement.classList.toggle('mobile-menu-open', isOpen);
+        }
+
+        hamburger.addEventListener('click', function () {
+            setMenuState(!mobileMenu.classList.contains('open'));
+        });
+
+        mobileMenu.addEventListener('click', function (event) {
+            if (event.target.classList.contains('mobile-menu') || event.target.classList.contains('mobile-menu-close') || event.target.classList.contains('mobile-menu-link')) {
+                setMenuState(false);
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                setMenuState(false);
+            }
+        });
+    }
+
     // ─── Accessibility: Skip Link ────────────────────────────────
     function injectSkipLink() {
         var skipLink = document.createElement('a');
@@ -488,6 +519,7 @@
         applyImageFallbacks();
         detectFlexGap();
         initializeThemeToggle();
+        initializeHamburgerMenu();
         initContactForm();
         initPortfolioFilter();
         initSmoothScroll();

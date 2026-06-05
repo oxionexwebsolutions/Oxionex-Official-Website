@@ -476,6 +476,368 @@
 }
 
 /* ======================================================
+   RESPONSIVE NAV + LAYOUT OVERRIDES
+   Desktop: horizontal nav, multi-column grids, wide hero.
+   Mobile/Tablets: drawer nav, stacked sections, larger tap targets.
+   ====================================================== */
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.desktop-only {
+    display: block;
+}
+
+.mobile-only {
+    display: none;
+}
+
+/* Desktop and laptop view */
+@media (min-width: 1025px) {
+    .navbar {
+        padding: 1rem 2rem;
+    }
+
+    .navbar-collapse {
+        display: flex !important;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .hamburger,
+    .mobile-menu {
+        display: none !important;
+    }
+
+    .hero-section {
+        display: flex;
+        align-items: center;
+        min-height: 100vh;
+        padding-top: calc(var(--navbar-height) + 2.5rem);
+        padding-bottom: 4rem;
+    }
+
+    .hero-content {
+        text-align: left;
+    }
+
+    .services-grid,
+    .projects-grid {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: var(--spacing-lg) !important;
+        justify-content: center !important;
+        align-items: stretch !important;
+    }
+
+    .services-grid .service-card {
+        flex: 1 1 calc(33.333% - var(--spacing-lg));
+        max-width: calc(33.333% - var(--spacing-lg));
+    }
+
+    .projects-grid .project-card {
+        flex: 1 1 calc(25% - var(--spacing-lg));
+        max-width: calc(25% - var(--spacing-lg));
+    }
+
+    .project-image {
+        height: 260px;
+    }
+}
+
+/* Tablet view */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .desktop-only {
+        display: block;
+    }
+
+    .mobile-only {
+        display: none;
+    }
+
+    .navbar-nav .nav-link {
+        margin-left: 0.9rem;
+    }
+
+    .hero-section .row {
+        align-items: center;
+    }
+
+    .hero-content,
+    .hero-visual {
+        width: 100%;
+    }
+
+    .hero-visual {
+        height: 420px;
+    }
+
+    .services-grid,
+    .projects-grid {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: var(--spacing-lg) !important;
+        justify-content: center !important;
+    }
+
+    .services-grid .service-card,
+    .projects-grid .project-card {
+        flex: 1 1 calc(50% - var(--spacing-lg));
+        max-width: calc(50% - var(--spacing-lg));
+    }
+
+    .process-timeline {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .project-image {
+        height: 220px;
+    }
+}
+
+/* Mobile view */
+@media (max-width: 767px) {
+    .desktop-only {
+        display: none !important;
+    }
+
+    .mobile-only {
+        display: inline-flex !important;
+    }
+
+    .navbar {
+        padding: 0.85rem 1rem;
+    }
+
+    .navbar-toggler,
+    .navbar-collapse {
+        display: none !important;
+    }
+
+    .hamburger {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid var(--page-border);
+        background: var(--toggle-bg);
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        padding: 0;
+        cursor: pointer;
+        flex: 0 0 auto;
+    }
+
+    .hamburger span {
+        width: 18px;
+        height: 2px;
+        border-radius: 999px;
+        background: var(--page-text);
+        transition: transform var(--transition-smooth), opacity var(--transition-smooth), width var(--transition-smooth);
+    }
+
+    .hamburger[aria-expanded="true"] span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .hamburger[aria-expanded="true"] span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger[aria-expanded="true"] span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .mobile-menu {
+        position: fixed;
+        inset: 0;
+        background: rgba(5, 7, 20, 0.72);
+        backdrop-filter: blur(10px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity var(--transition-smooth);
+        z-index: 2000;
+    }
+
+    .mobile-menu.open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .mobile-menu-panel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: min(88vw, 360px);
+        height: 100%;
+        background: var(--page-surface);
+        border-left: 1px solid var(--page-border);
+        box-shadow: -20px 0 50px rgba(0, 0, 0, 0.35);
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        transform: translateX(0);
+    }
+
+    .mobile-menu-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 0 1rem;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid var(--page-border);
+    }
+
+    .mobile-menu-brand {
+        font-weight: 800;
+        font-size: 1.1rem;
+        color: var(--page-text);
+    }
+
+    .mobile-menu-close {
+        width: 44px;
+        height: 44px;
+        border: 0;
+        border-radius: 12px;
+        background: var(--toggle-bg);
+        color: var(--page-text);
+        font-size: 1.6rem;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .mobile-menu-link {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        padding: 0.9rem 0.85rem;
+        border-radius: 14px;
+        color: var(--page-text);
+        text-decoration: none;
+        background: transparent;
+        transition: background var(--transition-smooth), color var(--transition-smooth), transform var(--transition-smooth);
+    }
+
+    .mobile-menu-link:hover,
+    .mobile-menu-link:focus {
+        background: rgba(0, 212, 255, 0.1);
+        color: var(--primary-color);
+        transform: translateX(2px);
+    }
+
+    .hero-section {
+        min-height: auto;
+        padding-top: calc(var(--navbar-height) + 1rem);
+        padding-bottom: 2rem;
+    }
+
+    .hero-section .row {
+        flex-direction: column;
+    }
+
+    .hero-content,
+    .hero-visual {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .hero-content {
+        order: 1;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-visual {
+        order: 2;
+        height: auto;
+        min-height: 260px;
+    }
+
+    .hero-buttons,
+    .hero-stats,
+    .filter-container {
+        flex-direction: column;
+    }
+
+    .hero-buttons .btn,
+    .filter-btn,
+    .btn,
+    .form-control,
+    .form-select,
+    .theme-toggle-btn {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .services-grid,
+    .projects-grid,
+    .process-timeline {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    .services-grid .service-card,
+    .projects-grid .project-card {
+        max-width: 100% !important;
+        flex: 1 1 100% !important;
+    }
+
+    .project-image {
+        height: 180px;
+    }
+
+    .project-overlay {
+        opacity: 1;
+        background: linear-gradient(to top, rgba(5, 7, 20, 0.92), rgba(5, 7, 20, 0.15));
+    }
+
+    .project-overlay .overlay-buttons {
+        flex-direction: column;
+    }
+
+    .why-us-item,
+    .testimonial-card,
+    .service-card,
+    .process-step,
+    .contact-item {
+        padding: 1rem;
+    }
+
+    .why-us-section,
+    .testimonials-section,
+    .process-section,
+    .contact-section,
+    .portfolio-section,
+    .services-section {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .contact-info,
+    .hero-stats {
+        gap: 1rem;
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        display: none !important;
+    }
+}
+
+/* ======================================================
    FORCE FLEX LAYOUT FOR GRIDS ON LARGER SCREENS
    Ensures incomplete last rows are centered and cards
    keep equal heights. Mobile rules below still apply.

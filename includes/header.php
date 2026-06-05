@@ -12,6 +12,11 @@
             <i class="fas fa-moon theme-toggle-icon" aria-hidden="true"></i>
             <span class="theme-toggle-label">Light mode</span>
         </button>
+        <button type="button" class="hamburger mobile-only ms-2" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -45,3 +50,20 @@
         </div>
     </div>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-menu-panel">
+        <div class="mobile-menu-header">
+            <span class="mobile-menu-brand">Oxionex</span>
+            <button type="button" class="mobile-menu-close" aria-label="Close menu">&times;</button>
+        </div>
+        <a class="mobile-menu-link" href="index.php#hero">Home</a>
+        <a class="mobile-menu-link" href="index.php#services">Services</a>
+        <a class="mobile-menu-link" href="index.php#portfolio">Portfolio</a>
+        <a class="mobile-menu-link" href="index.php#why-us">Why Us</a>
+        <a class="mobile-menu-link" href="index.php#testimonials">Testimonials</a>
+        <a class="mobile-menu-link" href="index.php#process">Process</a>
+        <a class="mobile-menu-link" href="index.php#contact">Contact</a>
+        <a class="mobile-menu-link" href="start_project.php">Start Project</a>
+    </div>
+</div>
