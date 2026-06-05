@@ -47,12 +47,20 @@ if ($pdo) {
         .btn-view:hover { background: rgba(0, 212, 255, 0.2); }
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000; align-items: center; justify-content: center; }
         .modal-overlay.active { display: flex; }
-        .modal-content { background: #1a1a3e; border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 15px; padding: 30px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; position: relative; }
+        .modal-content { background: #1a1a3e; border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 15px; padding: 30px; width: 90%; max-width: 860px; max-height: 85vh; overflow-y: auto; position: relative; }
         .modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #a0aec0; font-size: 24px; cursor: pointer; }
         .modal-close:hover { color: #00d4ff; }
         .modal-field { margin-bottom: 20px; }
         .modal-field strong { color: #00d4ff; display: block; margin-bottom: 5px; }
         .modal-field p { margin: 0; color: #a0aec0; word-break: break-word; }
+        .detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .detail-card { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 16px; }
+        .detail-card.full-width { grid-column: 1 / -1; }
+        .detail-label { color: #00d4ff; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.5rem; }
+        .detail-value { color: #a0aec0; margin: 0; word-break: break-word; white-space: pre-wrap; }
+        .raw-block { white-space: pre-wrap; word-break: break-word; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; color: #dbeafe; font-size: 0.88rem; }
+        .section-title { color: #fff; margin: 24px 0 12px; font-size: 1.05rem; }
+        .empty-value { color: #64748b; font-style: italic; }
     </style>
 </head>
 <body>
@@ -77,6 +85,8 @@ if ($pdo) {
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
+                            <th>Business Type</th>
+                            <th>Budget</th>
                             <th>Status</th>
                             <th>Date</th>
                             <th>Action</th>
@@ -88,10 +98,12 @@ if ($pdo) {
                             <td><?php echo htmlspecialchars($inquiry['name']); ?></td>
                             <td><?php echo htmlspecialchars($inquiry['email']); ?></td>
                             <td><?php echo htmlspecialchars($inquiry['phone'] ?? '-'); ?></td>
+                            <td><?php echo htmlspecialchars($inquiry['business_type'] ?? '-'); ?></td>
+                            <td><?php echo htmlspecialchars($inquiry['budget'] ?? '-'); ?></td>
                             <td><?php if ($inquiry['status'] === 'new'): ?><span class="badge-new">New</span><?php else: ?><?php echo ucfirst(htmlspecialchars($inquiry['status'])); ?><?php endif; ?></td>
                             <td><?php echo date('M d, Y H:i', strtotime($inquiry['created_at'])); ?></td>
                             <td>
-                                <button class="btn-view" onclick='viewInquiry(<?php echo json_encode($inquiry); ?>)'>
+                                <button class="btn-view" onclick='viewInquiry(<?php echo json_encode($inquiry, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>)'>
                                     <i class="fas fa-eye"></i> View
                                 </button>
                             </td>
@@ -113,31 +125,49 @@ if ($pdo) {
     </div>
 
     <script>
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function formatInquiryValue(value) {
+            if (value === null || value === undefined || value === '') {
+                return '<span class="empty-value">Not provided</span>';
+            }
+            return escapeHtml(value).replace(/\n/g, '<br>');
+        }
+
         function viewInquiry(inquiry) {
-            let detailsHTML = `
-                <div class="modal-field">
-                    <strong>Name</strong>
-                    <p>${inquiry.name}</p>
-                </div>
-                <div class="modal-field">
-                    <strong>Email</strong>
-                    <p>${inquiry.email}</p>
-                </div>
-                <div class="modal-field">
-                    <strong>Phone</strong>
-                    <p>${inquiry.phone || 'Not provided'}</p>
-                </div>
-                <div class="modal-field">
-                    <strong>Message</strong>
-                    <p>${inquiry.message || 'No message provided'}</p>
-                </div>
-                <div class="modal-field">
-                    <strong>Status</strong>
-                    <p>${inquiry.status}</p>
-                </div>
-                <div class="modal-field">
-                    <small style="color: #666;">Submitted: ${new Date(inquiry.created_at).toLocaleString()}</small>
-                </div>
+            const fieldMap = [
+                ['name', 'Full Name'],
+                ['email', 'Email Address'],
+                ['phone', 'Phone Number'],
+                ['business_type', 'Business Type'],
+                ['budget', 'Budget Range'],
+                ['message', 'Project Message'],
+                ['status', 'Status'],
+                ['created_at', 'Submitted At']
+            ];
+
+            let detailsHTML = '<div class="detail-grid">';
+            fieldMap.forEach(([key, label]) => {
+                const isFullWidth = key === 'message';
+                detailsHTML += `
+                    <div class="detail-card ${isFullWidth ? 'full-width' : ''}">
+                        <div class="detail-label">${label}</div>
+                        <div class="detail-value">${formatInquiryValue(inquiry[key])}</div>
+                    </div>
+                `;
+            });
+            detailsHTML += `</div>`;
+
+            detailsHTML += `
+                <div class="section-title">Raw Submission</div>
+                <div class="raw-block">${escapeHtml(JSON.stringify(inquiry, null, 2))}</div>
             `;
             document.getElementById('inquiryDetails').innerHTML = detailsHTML;
             document.getElementById('inquiryModal').classList.add('active');

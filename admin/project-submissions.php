@@ -93,12 +93,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submission_id']) && i
         .btn-view:hover { background: rgba(0, 212, 255, 0.2); }
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000; align-items: center; justify-content: center; }
         .modal-overlay.active { display: flex; }
-        .modal-content { background: #1a1a3e; border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 15px; padding: 30px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; position: relative; }
+        .modal-content { background: #1a1a3e; border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 15px; padding: 30px; width: 90%; max-width: 920px; max-height: 86vh; overflow-y: auto; position: relative; }
         .modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #a0aec0; font-size: 24px; cursor: pointer; }
         .modal-close:hover { color: #00d4ff; }
         .modal-field { margin-bottom: 20px; }
         .modal-field strong { color: #00d4ff; display: block; margin-bottom: 5px; }
         .modal-field p { margin: 0; color: #a0aec0; word-break: break-all; }
+        .detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .detail-card { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 16px; }
+        .detail-card.full-width { grid-column: 1 / -1; }
+        .detail-label { color: #00d4ff; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.5rem; }
+        .detail-value { color: #a0aec0; margin: 0; word-break: break-word; white-space: pre-wrap; }
+        .raw-block { white-space: pre-wrap; word-break: break-word; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; color: #dbeafe; font-size: 0.88rem; }
+        .section-title { color: #fff; margin: 24px 0 12px; font-size: 1.05rem; }
+        .empty-value { color: #64748b; font-style: italic; }
+        .attachment-list { display: grid; gap: 0.65rem; }
+        .attachment-item { display: flex; align-items: center; gap: 0.65rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 12px; color: #a0aec0; }
+        .attachment-item i { color: #00d4ff; }
         .service-badge { display: inline-block; background: rgba(0, 212, 255, 0.1); color: #00d4ff; padding: 5px 10px; border-radius: 5px; margin-right: 5px; margin-bottom: 5px; font-size: 12px; }
         .action-buttons { display: flex; gap: 10px; margin-top: 20px; }
         .btn-action { padding: 8px 15px; border: none; border-radius: 8px; cursor: pointer; font-size: 12px; transition: all 0.3s ease; }
@@ -178,7 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submission_id']) && i
                             </td>
                             <td><small><?php echo date('M d, Y H:i', strtotime($submission['created_at'])); ?></small></td>
                             <td>
-                                <button class="btn-view" onclick='viewSubmission(<?php echo $submission['id']; ?>, <?php echo json_encode($submission); ?>)'>
+                                <button class="btn-view" onclick='viewSubmission(<?php echo $submission['id']; ?>, <?php echo json_encode($submission, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>)'>
                                     <i class="fas fa-eye"></i> View
                                 </button>
                             </td>
@@ -228,6 +239,89 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submission_id']) && i
     </div>
 
     <script>
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function formatValue(value) {
+            if (value === null || value === undefined || value === '') {
+                return '<span class="empty-value">Not provided</span>';
+            }
+            if (Array.isArray(value)) {
+                return escapeHtml(value.join(', '));
+            }
+            return escapeHtml(value).replace(/\n/g, '<br>');
+        }
+
+        function buildSection(title, items, fullWidthKeys = []) {
+            let html = `<div class="section-title">${escapeHtml(title)}</div><div class="detail-grid">`;
+            items.forEach(([key, label]) => {
+                const isFullWidth = fullWidthKeys.includes(key);
+                html += `
+                    <div class="detail-card ${isFullWidth ? 'full-width' : ''}">
+                        <div class="detail-label">${escapeHtml(label)}</div>
+                        <div class="detail-value">${formatValue(items.__source ? items.__source[key] : '')}</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function getStep2Label(key) {
+            const labels = {
+                website_purpose: 'Website Purpose',
+                num_pages: 'Estimated Pages',
+                style_preference: 'Style / Theme',
+                features_needed: 'Key Features Needed',
+                budget: 'Budget',
+                deadline: 'Expected Timeline',
+                reference_sites: 'Reference Websites',
+                colors: 'Preferred Colors',
+                assets: 'Existing Branding Assets',
+                current_site: 'Current Website URL',
+                design_goals: 'Design Goals',
+                platforms: 'Platforms Needed',
+                business_niche: 'Business Niche / Industry',
+                posting_frequency: 'Posting Frequency',
+                goal: 'Primary Goal',
+                existing_links: 'Existing Social Links',
+                video_type: 'Video Type',
+                duration: 'Duration',
+                platform: 'Target Platform',
+                style: 'Editing Style',
+                references: 'Reference Links',
+                footage: 'Raw Footage',
+                marketing_goal: 'Marketing Goal',
+                audience: 'Target Audience',
+                monthly_budget: 'Monthly Ad Budget',
+                timeline: 'Campaign Timeline',
+                existing_accounts: 'Existing Accounts',
+                design_type: 'Design Type',
+                brand_name: 'Brand Name',
+                brand_style: 'Brand Style',
+                service_type: 'Technical Service Needed',
+                existing_hosting: 'Current Hosting Status',
+                problem_description: 'Problem Description / Requirements'
+            };
+            return labels[key] || key.replace(/_/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+        }
+
+        function parseStep2Data(submission) {
+            if (!submission.step2_data) return {};
+            try {
+                return typeof submission.step2_data === 'string' ? JSON.parse(submission.step2_data) : submission.step2_data;
+            } catch (e) {
+                console.error('Error parsing step2 data:', e);
+                return { __raw: submission.step2_data };
+            }
+        }
+
         function viewSubmission(id, submission) {
             
             // Set form hidden inputs
@@ -235,68 +329,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submission_id']) && i
             document.getElementById('submissionId2').value = id;
             document.getElementById('submissionId3').value = id;
             
-            // Build details HTML
-            let detailsHTML = `
-                <div class="modal-field">
-                    <strong>Client Information</strong>
-                    <p><strong>Name:</strong> ${submission.client_name}</p>
-                    <p><strong>Email:</strong> ${submission.client_email}</p>
-                    <p><strong>Phone:</strong> ${submission.client_phone}</p>
-                </div>
-                
-                <div class="modal-field">
-                    <strong>Company Information</strong>
-                    <p><strong>Company:</strong> ${submission.company_name}</p>
-                    <p><strong>Website:</strong> ${submission.company_site || 'Not provided'}</p>
-                    <p><strong>Location:</strong> ${submission.company_location || 'Not provided'}</p>
-                </div>
-                
-                <div class="modal-field">
-                    <strong>Project Details</strong>
-                    <p><strong>Main Service:</strong> ${submission.main_service}</p>
-                    <p><strong>Specific Service:</strong> ${submission.specific_service || 'Not selected'}</p>
-                </div>
-            `;
-            
-            // Add step 2 data if available
-            if (submission.step2_data) {
+            const step2Data = parseStep2Data(submission);
+            const attachments = (() => {
                 try {
-                    const step2Data = JSON.parse(submission.step2_data);
-                    detailsHTML += '<div class="modal-field"><strong>Project Requirements</strong>';
-                    for (const [key, value] of Object.entries(step2Data)) {
-                        if (value && value !== '') {
-                            const keyLabel = key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ');
-                            if (Array.isArray(value)) {
-                                detailsHTML += `<p><strong>${keyLabel}:</strong> ${value.join(', ')}</p>`;
-                            } else {
-                                detailsHTML += `<p><strong>${keyLabel}:</strong> ${value}</p>`;
-                            }
-                        }
-                    }
-                    detailsHTML += '</div>';
-                } catch (e) {
-                    console.error('Error parsing step2 data:', e);
-                }
-            }
-            
-            // Add attachments if available
-            if (submission.attachments) {
-                try {
-                    const attachments = JSON.parse(submission.attachments);
-                    if (attachments && attachments.length > 0) {
-                        detailsHTML += '<div class="modal-field"><strong>Attachments</strong>';
-                        attachments.forEach(att => {
-                            detailsHTML += `<p><i class="fas fa-file"></i> ${att.name}</p>`;
-                        });
-                        detailsHTML += '</div>';
-                    }
+                    return submission.attachments ? (typeof submission.attachments === 'string' ? JSON.parse(submission.attachments) : submission.attachments) : [];
                 } catch (e) {
                     console.error('Error parsing attachments:', e);
+                    return [];
                 }
+            })();
+
+            let detailsHTML = `
+                <div class="section-title">Client Information</div>
+                <div class="detail-grid">
+                    <div class="detail-card"><div class="detail-label">Full Name</div><div class="detail-value">${formatValue(submission.client_name)}</div></div>
+                    <div class="detail-card"><div class="detail-label">Company Name</div><div class="detail-value">${formatValue(submission.company_name)}</div></div>
+                    <div class="detail-card"><div class="detail-label">Email Address</div><div class="detail-value">${formatValue(submission.client_email)}</div></div>
+                    <div class="detail-card"><div class="detail-label">Phone Number</div><div class="detail-value">${formatValue(submission.client_phone)}</div></div>
+                    <div class="detail-card"><div class="detail-label">Company Website</div><div class="detail-value">${formatValue(submission.company_site)}</div></div>
+                    <div class="detail-card"><div class="detail-label">Company Location</div><div class="detail-value">${formatValue(submission.company_location)}</div></div>
+                </div>
+
+                <div class="section-title">Project Request</div>
+                <div class="detail-grid">
+                    <div class="detail-card"><div class="detail-label">Main Service</div><div class="detail-value">${formatValue(submission.main_service)}</div></div>
+                    <div class="detail-card"><div class="detail-label">Specific Service</div><div class="detail-value">${formatValue(submission.specific_service)}</div></div>
+                    <div class="detail-card full-width"><div class="detail-label">Submitted At</div><div class="detail-value">${formatValue(submission.created_at ? new Date(submission.created_at).toLocaleString() : '')}</div></div>
+                </div>
+
+                <div class="section-title">Step 2 Answers</div>
+                <div class="detail-grid">
+            `;
+
+            const step2Keys = Object.keys(step2Data).filter((key) => key !== '__raw');
+            if (step2Keys.length) {
+                step2Keys.forEach((key) => {
+                    const value = step2Data[key];
+                    const isArray = Array.isArray(value);
+                    detailsHTML += `
+                        <div class="detail-card ${key === 'problem_description' || key === 'website_purpose' || key === 'features_needed' || key === 'design_goals' || key === 'audience' ? 'full-width' : ''}">
+                            <div class="detail-label">${escapeHtml(getStep2Label(key))}</div>
+                            <div class="detail-value">${formatValue(isArray ? value : value)}</div>
+                        </div>
+                    `;
+                });
+            } else {
+                detailsHTML += `<div class="detail-card full-width"><div class="detail-label">Step 2 Answers</div><div class="detail-value"><span class="empty-value">No additional project details were submitted.</span></div></div>`;
             }
-            
-            detailsHTML += `<div class="modal-field"><small style="color: #666;">Submitted: ${new Date(submission.created_at).toLocaleString()}</small></div>`;
-            
+            detailsHTML += `</div>`;
+
+            detailsHTML += `
+                <div class="section-title">Attachments</div>
+                <div class="attachment-list">
+            `;
+            if (attachments && attachments.length) {
+                attachments.forEach((att) => {
+                    const attachmentName = typeof att === 'string' ? att : (att.name || att.file || 'Attachment');
+                    detailsHTML += `<div class="attachment-item"><i class="fas fa-paperclip"></i><span>${escapeHtml(attachmentName)}</span></div>`;
+                });
+            } else {
+                detailsHTML += `<div class="attachment-item"><i class="fas fa-info-circle"></i><span>No attachments uploaded.</span></div>`;
+            }
+            detailsHTML += `</div>`;
+
+            detailsHTML += `
+                <div class="section-title">Raw Submission</div>
+                <div class="raw-block">${escapeHtml(JSON.stringify(submission, null, 2))}</div>
+            `;
+
             document.getElementById('submissionDetails').innerHTML = detailsHTML;
             document.getElementById('submissionModal').classList.add('active');
         }
