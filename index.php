@@ -84,12 +84,7 @@ if (empty($services)) {
     <!-- Preloader -->
     <div id="preloader" class="preloader">
         <div class="preloader-content">
-            <div class="loader-diagonal">
-                <div class="loader-square square-1"></div>
-                <div class="loader-square square-2"></div>
-                <div class="loader-square square-3"></div>
-                <div class="loader-square square-4"></div>
-            </div>
+            <img src="assets/images/animation%20logo.png" alt="Oxionex animated logo" class="preloader-logo-image">
             <div class="preloader-logo">
                 <p style="font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; margin: 0;">OXIONEX</p>
                 <p style="font-size: 0.85rem; letter-spacing: 1px; color: #999; margin: 0;">WEB SOLUTIONS</p>

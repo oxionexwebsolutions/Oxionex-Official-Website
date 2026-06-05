@@ -127,8 +127,14 @@ $formValues = [
         .sidebar-menu a { display: flex; align-items: center; gap: 10px; padding: 12px 15px; color: #a0aec0; text-decoration: none; border-radius: 10px; transition: all 0.3s ease; }
         .sidebar-menu a:hover, .sidebar-menu a.active { background: rgba(0, 212, 255, 0.1); color: #00d4ff; }
         .main-content { padding: 30px; overflow-y: auto; }
+        .panel-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; }
+        .panel-header h1, .panel-header h2 { margin: 0; }
+        .page-note { color: #94a3b8; margin: 0.35rem 0 0; max-width: 60ch; }
         .form-card, .table-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; padding: 24px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .form-grid .full-width { grid-column: 1 / -1; }
         .form-group { margin-bottom: 18px; }
+        .helper-text { display: block; margin-top: 0.45rem; color: #94a3b8; font-size: 0.85rem; }
         label { display: block; margin-bottom: 8px; color: #00d4ff; font-weight: 600; }
         input, textarea, select { width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; font-family: 'Inter', sans-serif; }
         input:focus, textarea:focus, select:focus { outline: none; border-color: #00d4ff; box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); }
@@ -145,6 +151,7 @@ $formValues = [
         .badge-on { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
         .badge-off { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
         .stars { color: #fbbf24; }
+        .testimonial-quote { color: #a0aec0; font-style: italic; background: rgba(255,255,255,0.03); border-left: 3px solid rgba(0, 212, 255, 0.4); padding: 0.75rem 1rem; border-radius: 0 12px 12px 0; }
     </style>
 </head>
 <body>
@@ -161,10 +168,10 @@ $formValues = [
             </ul>
         </div>
         <div class="main-content">
-            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+            <div class="panel-header flex-wrap mb-4">
                 <div>
-                    <h1 class="mb-2" style="font-size: 2rem; font-weight: 800;">Testimonials Management</h1>
-                    <p style="color: #a0aec0; margin: 0;">Publish client testimonials that appear on the homepage slider.</p>
+                    <h1 style="font-size: 2rem; font-weight: 800;">Testimonials Management</h1>
+                    <p class="page-note">Publish client testimonials that appear on the homepage slider.</p>
                 </div>
             </div>
 
@@ -175,37 +182,45 @@ $formValues = [
             <div class="row g-4">
                 <div class="col-lg-5">
                     <div class="form-card">
-                        <h2 style="font-size: 1.35rem; margin-bottom: 20px;"><?php echo $formValues['id'] ? 'Edit Testimonial' : 'Add Testimonial'; ?></h2>
+                        <div class="panel-header" style="margin-bottom: 1rem;">
+                            <div>
+                                <h2 style="font-size: 1.35rem;"><?php echo $formValues['id'] ? 'Edit Testimonial' : 'Add Testimonial'; ?></h2>
+                                <span class="helper-text">Use this form to publish testimonials in the homepage slider.</span>
+                            </div>
+                        </div>
                         <form method="post">
                             <input type="hidden" name="id" value="<?php echo (int) $formValues['id']; ?>">
                             <input type="hidden" name="action" value="save">
-                            <div class="form-group">
-                                <label for="client_name">Client Name</label>
-                                <input type="text" id="client_name" name="client_name" required value="<?php echo htmlspecialchars($formValues['client_name']); ?>">
-                            </div>
-                            <div class="form-group">
-                                <label for="client_role">Client Role</label>
-                                <input type="text" id="client_role" name="client_role" value="<?php echo htmlspecialchars($formValues['client_role']); ?>">
-                            </div>
-                            <div class="form-group">
-                                <label for="client_company">Client Company</label>
-                                <input type="text" id="client_company" name="client_company" value="<?php echo htmlspecialchars($formValues['client_company']); ?>">
-                            </div>
-                            <div class="form-group">
-                                <label for="client_image">Client Image URL</label>
-                                <input type="url" id="client_image" name="client_image" value="<?php echo htmlspecialchars($formValues['client_image']); ?>">
-                            </div>
-                            <div class="form-group">
-                                <label for="rating">Rating</label>
-                                <select id="rating" name="rating">
-                                    <?php for ($rating = 5; $rating >= 1; $rating--): ?>
-                                        <option value="<?php echo $rating; ?>" <?php echo ((int) $formValues['rating'] === $rating) ? 'selected' : ''; ?>><?php echo $rating; ?> Stars</option>
-                                    <?php endfor; ?>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="message">Testimonial Message</label>
-                                <textarea id="message" name="message" rows="7" required><?php echo htmlspecialchars($formValues['message']); ?></textarea>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="client_name">Client Name</label>
+                                    <input type="text" id="client_name" name="client_name" required value="<?php echo htmlspecialchars($formValues['client_name']); ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="rating">Rating</label>
+                                    <select id="rating" name="rating">
+                                        <?php for ($rating = 5; $rating >= 1; $rating--): ?>
+                                            <option value="<?php echo $rating; ?>" <?php echo ((int) $formValues['rating'] === $rating) ? 'selected' : ''; ?>><?php echo $rating; ?> Stars</option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="client_role">Client Role</label>
+                                    <input type="text" id="client_role" name="client_role" value="<?php echo htmlspecialchars($formValues['client_role']); ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="client_company">Client Company</label>
+                                    <input type="text" id="client_company" name="client_company" value="<?php echo htmlspecialchars($formValues['client_company']); ?>">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="client_image">Client Image URL</label>
+                                    <input type="url" id="client_image" name="client_image" value="<?php echo htmlspecialchars($formValues['client_image']); ?>">
+                                    <span class="helper-text">Optional. Use a direct image URL or leave empty for a generic avatar.</span>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="message">Testimonial Message</label>
+                                    <textarea id="message" name="message" rows="7" required><?php echo htmlspecialchars($formValues['message']); ?></textarea>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <div class="form-check">
@@ -220,7 +235,12 @@ $formValues = [
 
                 <div class="col-lg-7">
                     <div class="table-card">
-                        <h2 style="font-size: 1.35rem; margin-bottom: 20px;">Current Testimonials</h2>
+                        <div class="panel-header" style="margin-bottom: 1rem;">
+                            <div>
+                                <h2 style="font-size: 1.35rem;">Current Testimonials</h2>
+                                <span class="helper-text">Edit a testimonial to load it back into the form.</span>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table align-middle">
                                 <thead>
@@ -271,7 +291,7 @@ $formValues = [
                                             </tr>
                                             <tr>
                                                 <td colspan="4" style="border-top: none; padding-top: 0;">
-                                                    <div style="color: #a0aec0; font-style: italic;">"<?php echo htmlspecialchars($testimonial['message']); ?>"</div>
+                                                    <div class="testimonial-quote">"<?php echo htmlspecialchars($testimonial['message']); ?>"</div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

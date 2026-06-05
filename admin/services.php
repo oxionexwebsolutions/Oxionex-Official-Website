@@ -125,8 +125,14 @@ $formValues = [
         .sidebar-menu a { display: flex; align-items: center; gap: 10px; padding: 12px 15px; color: #a0aec0; text-decoration: none; border-radius: 10px; transition: all 0.3s ease; }
         .sidebar-menu a:hover, .sidebar-menu a.active { background: rgba(0, 212, 255, 0.1); color: #00d4ff; }
         .main-content { padding: 30px; overflow-y: auto; }
+        .panel-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; }
+        .panel-header h1, .panel-header h2 { margin: 0; }
+        .page-note { color: #94a3b8; margin: 0.35rem 0 0; max-width: 60ch; }
         .form-card, .table-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; padding: 24px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .form-grid .full-width { grid-column: 1 / -1; }
         .form-group { margin-bottom: 18px; }
+        .helper-text { display: block; margin-top: 0.45rem; color: #94a3b8; font-size: 0.85rem; }
         label { display: block; margin-bottom: 8px; color: #00d4ff; font-weight: 600; }
         input, textarea, select { width: 100%; padding: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; font-family: 'Inter', sans-serif; }
         input:focus, textarea:focus, select:focus { outline: none; border-color: #00d4ff; box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); }
@@ -143,6 +149,9 @@ $formValues = [
         .badge-status { display: inline-flex; align-items: center; padding: 0.35rem 0.65rem; border-radius: 999px; font-size: 0.85rem; font-weight: 700; }
         .badge-on { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
         .badge-off { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
+        .service-icon-preview { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 12px; background: rgba(0, 212, 255, 0.12); color: #00d4ff; margin-right: 0.6rem; }
+        .service-row-meta { display: flex; align-items: flex-start; gap: 0.75rem; }
+        .service-row-title { display: flex; flex-direction: column; gap: 0.15rem; }
     </style>
 </head>
 <body>
@@ -159,10 +168,10 @@ $formValues = [
             </ul>
         </div>
         <div class="main-content">
-            <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+            <div class="panel-header flex-wrap">
                 <div>
-                    <h1 class="mb-2" style="font-size: 2rem; font-weight: 800;">Services Management</h1>
-                    <p style="color: #a0aec0; margin: 0;">Add, edit, and reorder the services shown on the homepage.</p>
+                    <h1 style="font-size: 2rem; font-weight: 800;">Services Management</h1>
+                    <p class="page-note">Add, edit, activate, hide, and reorder the services shown on the homepage.</p>
                 </div>
             </div>
 
@@ -173,29 +182,38 @@ $formValues = [
             <div class="row g-4">
                 <div class="col-lg-5">
                     <div class="form-card">
-                        <h2 style="font-size: 1.35rem; margin-bottom: 20px;"><?php echo $formValues['id'] ? 'Edit Service' : 'Add Service'; ?></h2>
+                        <div class="panel-header" style="margin-bottom: 1rem;">
+                            <div>
+                                <h2 style="font-size: 1.35rem;"><?php echo $formValues['id'] ? 'Edit Service' : 'Add Service'; ?></h2>
+                                <span class="helper-text">Fields marked as important should be filled before saving.</span>
+                            </div>
+                        </div>
                         <form method="post">
                             <input type="hidden" name="id" value="<?php echo (int) $formValues['id']; ?>">
                             <input type="hidden" name="action" value="save">
-                            <div class="form-group">
-                                <label for="title">Title</label>
-                                <input type="text" id="title" name="title" required value="<?php echo htmlspecialchars($formValues['title']); ?>">
-                            </div>
-                            <div class="form-group">
-                                <label for="subtitle">Subtitle</label>
-                                <input type="text" id="subtitle" name="subtitle" required value="<?php echo htmlspecialchars($formValues['subtitle']); ?>">
-                            </div>
-                            <div class="form-group">
-                                <label for="icon">Icon Class</label>
-                                <input type="text" id="icon" name="icon" placeholder="fas fa-globe" value="<?php echo htmlspecialchars($formValues['icon']); ?>">
-                            </div>
-                            <div class="form-group">
-                                <label for="points">Points</label>
-                                <textarea id="points" name="points" rows="8" required placeholder="One point per line"><?php echo htmlspecialchars($formValues['points']); ?></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="sort_order">Sort Order</label>
-                                <input type="number" id="sort_order" name="sort_order" value="<?php echo (int) $formValues['sort_order']; ?>">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input type="text" id="title" name="title" required value="<?php echo htmlspecialchars($formValues['title']); ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="subtitle">Subtitle</label>
+                                    <input type="text" id="subtitle" name="subtitle" required value="<?php echo htmlspecialchars($formValues['subtitle']); ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="icon">Icon Class</label>
+                                    <input type="text" id="icon" name="icon" placeholder="fas fa-globe" value="<?php echo htmlspecialchars($formValues['icon']); ?>">
+                                    <span class="helper-text">Use any Font Awesome 6 icon class.</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sort_order">Sort Order</label>
+                                    <input type="number" id="sort_order" name="sort_order" value="<?php echo (int) $formValues['sort_order']; ?>">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="points">Points</label>
+                                    <textarea id="points" name="points" rows="8" required placeholder="One point per line"><?php echo htmlspecialchars($formValues['points']); ?></textarea>
+                                    <span class="helper-text">Write one bullet per line. These lines become the collapsible list on the homepage.</span>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <div class="form-check">
@@ -210,7 +228,12 @@ $formValues = [
 
                 <div class="col-lg-7">
                     <div class="table-card">
-                        <h2 style="font-size: 1.35rem; margin-bottom: 20px;">Current Services</h2>
+                        <div class="panel-header" style="margin-bottom: 1rem;">
+                            <div>
+                                <h2 style="font-size: 1.35rem;">Current Services</h2>
+                                <span class="helper-text">Edit a row to load it back into the form.</span>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table align-middle">
                                 <thead>
@@ -228,8 +251,13 @@ $formValues = [
                                             <tr>
                                                 <td><?php echo (int) $service['sort_order']; ?></td>
                                                 <td>
-                                                    <strong><?php echo htmlspecialchars($service['title']); ?></strong><br>
-                                                    <small style="color: #a0aec0;"><?php echo htmlspecialchars($service['subtitle']); ?></small>
+                                                    <div class="service-row-meta">
+                                                        <div class="service-icon-preview"><i class="<?php echo htmlspecialchars($service['icon'] ?: 'fas fa-cube'); ?>"></i></div>
+                                                        <div class="service-row-title">
+                                                            <strong><?php echo htmlspecialchars($service['title']); ?></strong>
+                                                            <small style="color: #a0aec0;"><?php echo htmlspecialchars($service['subtitle']); ?></small>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <?php
