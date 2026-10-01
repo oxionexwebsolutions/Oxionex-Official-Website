@@ -614,29 +614,81 @@ img {
         display: inline-flex !important;
     }
 
-    .navbar {
-        padding: 0.85rem 1rem;
+    /* ── MOBILE NAVBAR: single row, never wraps ── */
+    nav.navbar {
+        padding: 0.75rem 1rem !important;
     }
 
+    nav.navbar .container-fluid {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+    /* Logo gets all the leftover space */
+    nav.navbar .navbar-brand {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        margin-right: 0 !important;
+        overflow: hidden;
+    }
+
+    .navbar-brand-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 1.1rem;
+    }
+
+    /* Theme toggle: small icon-only circle, same size as hamburger */
+    nav.navbar .theme-toggle-btn {
+        flex: 0 0 36px !important;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        max-width: 36px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border-radius: 50% !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0 !important;
+    }
+
+    nav.navbar .theme-toggle-btn .theme-toggle-label {
+        display: none !important;
+    }
+
+    nav.navbar .theme-toggle-btn .theme-toggle-icon {
+        font-size: 1rem !important;
+        margin: 0 !important;
+    }
+
+    /* Hide Bootstrap's own toggler */
     .navbar-toggler,
     .navbar-collapse {
         display: none !important;
     }
 
+    /* Hamburger: same fixed size as theme toggle */
     .hamburger {
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
+        flex: 0 0 36px !important;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        border-radius: 10px;
         border: 1px solid var(--page-border);
         background: var(--toggle-bg);
-        display: inline-flex;
+        display: inline-flex !important;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 5px;
+        gap: 4px;
         padding: 0;
         cursor: pointer;
-        flex: 0 0 auto;
+        margin: 0 !important;
     }
 
     .hamburger span {
@@ -912,8 +964,8 @@ img {
 
     /* Hero Section */
     .hero-section {
-        min-height: calc(100vh - 80px);
-        padding-top: 80px;
+        min-height: calc(100vh - var(--navbar-height));
+        padding-top: calc(var(--navbar-height) + 1.25rem);
         padding-bottom: 2rem;
     }
 
@@ -1264,7 +1316,7 @@ img {
 @media (max-height: 500px) and (orientation: landscape) {
     .hero-section {
         min-height: auto;
-        padding: 80px 0 2rem 0;
+        padding: calc(var(--navbar-height) + 0.75rem) 0 2rem 0;
     }
 
     .scroll-indicator {

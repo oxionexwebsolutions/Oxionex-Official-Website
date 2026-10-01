@@ -1,5 +1,7 @@
+
 <?php
-/**
+
+ /**
  * Oxionex Web Solutions - Database Configuration
  * Secure PDO-based database connection
  */

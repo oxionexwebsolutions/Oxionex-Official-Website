@@ -294,27 +294,33 @@ a:hover {
 }
 
 .gradient-text {
-    background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 50%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #00d4ff;
+    background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
     background-clip: text;
     display: inline-block;
 }
 
 .gradient-text-secondary {
+    color: #7c3aed;
     background: linear-gradient(135deg, #7c3aed 0%, #ff006e 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
     display: inline-block;
 }
 
 .highlight-text {
+    color: #ff006e;
     background: linear-gradient(90deg, #ff006e 0%, #ff006e 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
     display: inline-block;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .gradient-text,
+    .gradient-text-secondary,
+    .highlight-text {
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 }
 
 /* ======================================================
@@ -790,6 +796,8 @@ section {
     display: flex;
     gap: var(--spacing-md);
     flex-wrap: wrap;
+    position: relative;
+    z-index: 20;
 }
 
 /* Ensure project images maintain aspect ratio and are responsive on all devices */

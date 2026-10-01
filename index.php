@@ -72,11 +72,11 @@ if (empty($services)) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/animations.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
-    <link rel="stylesheet" href="assets/css/cursor-follower.css">
-    <link rel="stylesheet" href="assets/css/project-preview.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=4">
+    <link rel="stylesheet" href="assets/css/animations.css?v=4">
+    <link rel="stylesheet" href="assets/css/responsive.css?v=4">
+    <link rel="stylesheet" href="assets/css/cursor-follower.css?v=4">
+    <link rel="stylesheet" href="assets/css/project-preview.css?v=4">
     
     <title>Oxionex Web Solutions - Premium Web Design & Development</title>
 </head>
@@ -637,9 +637,10 @@ if (empty($services)) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     
     <!-- Custom JS Files -->
-    <script src="assets/js/particles.js"></script>
-    <script src="assets/js/animations.js"></script>
-    <script src="assets/js/project-preview.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/particles.js?v=4"></script>
+    <script src="assets/js/animations.js?v=4"></script>
+    <script src="assets/js/project-preview.js?v=4"></script>
+    <script src="assets/js/main.js?v=4"></script>
+    <script src="assets/js/navbar-height.js?v=4"></script>
 </body>
 </html>

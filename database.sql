@@ -57,18 +57,6 @@ CREATE TABLE IF NOT EXISTS statistics (
     sort_order INT DEFAULT 0
 );
 
--- Services table
-CREATE TABLE IF NOT EXISTS services (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    subtitle VARCHAR(255) NOT NULL,
-    icon VARCHAR(100) NOT NULL DEFAULT 'fas fa-cube',
-    points TEXT NOT NULL,
-    sort_order INT DEFAULT 0,
-    is_active TINYINT(1) DEFAULT 1,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 -- Admin users table
 CREATE TABLE IF NOT EXISTS admin_users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -107,15 +95,6 @@ INSERT INTO testimonials (client_name, client_role, client_company, client_image
 ('Rahul Sharma', 'Director', 'InnovateTech Solutions', 'assets/images/client3.jpg', 5, 'Professional, communicative, and incredibly talented. Oxionex turned our idea into a world-class web application. Highly recommended for any serious business.'),
 ('Priya Desai', 'Marketing Head', 'GreenPath Organics', 'assets/images/client4.jpg', 5, 'We needed a complete digital transformation and Oxionex delivered beyond what we imagined. Our website now looks better than international competitors!'),
 ('Mohammed Al-Rashid', 'Owner', 'AlRashid Enterprises', 'assets/images/client5.jpg', 5, 'From consultation to launch, the entire experience was premium. The team is professional, deadline-oriented, and the final product is absolutely world-class.');
-
--- Sample Services
-INSERT INTO services (title, subtitle, icon, points, sort_order, is_active) VALUES
-('Website Development', 'Build modern websites and web systems', 'fas fa-globe', 'Landing Page Development\nBusiness Website Development\nE-Commerce Website Development\nPortfolio Website Design\nCustom Web Applications\nAdmin Panel & Dashboard Development\nOnline Booking & Registration Systems', 1, 1),
-('Website Design & Optimization', 'Improve UI, speed, and site upkeep', 'fas fa-paint-brush', 'Website Redesign & UI/UX Improvement\nResponsive Mobile-Friendly Websites\nWebsite Speed & Security Optimization\nWebsite Maintenance & Management', 2, 1),
-('Social Media Management', 'Run pages, content, and designs', 'fas fa-share-alt', 'Social Media Page Handling\nInstagram Page Management\nFacebook Page Management\nContent Creation for Social Media\nSocial Media Post Design', 3, 1),
-('Video Production & Marketing', 'Create videos and drive traffic', 'fas fa-video', 'Reel Editing & Short Video Editing\nPromotional Video Editing\nAdvertisement Video Creation\nFacebook & Instagram Ads\nDigital Marketing Services\nSEO & Online Visibility Optimization\nWhatsApp Marketing Integration\nEmail Marketing Campaigns\nBrand Advertisement Campaigns', 4, 1),
-('Branding & Graphic Design', 'Build a strong visual identity', 'fas fa-palette', 'Branding & Identity Design\nLogo Design\nBrochure Design\nFlyer & Pamphlet Design\nBanner & Poster Design\nBusiness Card Design\nProduct Catalog Design\nCustom Templates & Creative Assets\nContent Writing for Websites & Brands', 5, 1),
-('Hosting & Technical Services', 'Deploy, secure, and support systems', 'fas fa-cube', 'Website Hosting & Domain Setup\nTechnical Support & IT Consultation\nStartup Online Presence Setup\nCreative Marketing Solutions\nCloud Hosting & Server Management\nSSL & Website Security Integration\nBug Fixing & Website Error Resolution\nAPI Integration & Automation\nDatabase Design & Integration (MySQL / SQL)\nAI-Powered Website Features & Automation\nOngoing Website Management & Support\nCustom Project Development for Businesses', 6, 1);
 
 -- Default admin user (password: admin123)
 -- Hash generated using: password_hash('admin123', PASSWORD_BCRYPT)
