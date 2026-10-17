@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once __DIR__ . '/includes/form-security.php';
+oxionex_start_secure_session();
 require_once 'includes/db.php';
 ?>
 <!DOCTYPE html>
@@ -51,6 +52,9 @@ require_once 'includes/db.php';
             <div class="sp-form-container">
                 <div class="sp-form-wrapper">
                     <form id="sp-form" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                        <input type="hidden" name="form_started_at" value="<?php echo time(); ?>">
+                        <div class="hp-field" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
                         <!-- STEP 1: BASIC CLIENT INFORMATION -->
                         <div id="sp-step-1" class="sp-form-step active">
                             <div class="sp-step-header">
@@ -165,7 +169,6 @@ require_once 'includes/db.php';
 
     <?php include 'includes/footer.php'; ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/start-project-form.js"></script>
+    <script defer src="assets/js/start-project-form.js"></script>
 </body>
 </html>

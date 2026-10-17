@@ -4,7 +4,8 @@
  * Manage projects, inquiries, and website content
  */
 
-session_start();
+require_once '../includes/form-security.php';
+oxionex_start_secure_session();
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 
@@ -281,7 +282,7 @@ if ($pdo) {
                 <li><a href="services.php"><i class="fas fa-tools"></i> Services</a></li>
                 <li><a href="testimonials.php"><i class="fas fa-star"></i> Testimonials</a></li>
                 <li style="margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;">
-                    <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    <?php echo admin_logout_form(); ?>
                 </li>
             </ul>
         </div>
@@ -295,7 +296,7 @@ if ($pdo) {
                 <div class="user-info">
                     <span>Welcome, <strong><?php echo htmlspecialchars($_SESSION['admin_username']); ?></strong></span>
                     <a href="/" class="logout-btn" style="background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%); color: #0f0f23;">Back to Website</a>
-                    <a href="logout.php" class="logout-btn">Logout</a>
+                    <?php echo admin_logout_form('logout-btn'); ?>
                 </div>
             </div>
 

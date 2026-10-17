@@ -274,15 +274,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Preloader fade out
-window.addEventListener('load', function() {
+// Hide the preloader promptly, with a hard fallback if a dependency stalls.
+(function initPreloader() {
     const preloader = document.getElementById('preloader');
-    if (preloader) {
-        setTimeout(() => {
-            preloader.style.display = 'none';
-        }, 3000);
-    }
-});
+    if (!preloader) return;
+    const hide = () => {
+        preloader.style.display = 'none';
+        preloader.setAttribute('aria-hidden', 'true');
+    };
+    const timeout = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 600;
+    document.addEventListener('DOMContentLoaded', () => setTimeout(hide, timeout), { once: true });
+    window.addEventListener('load', hide, { once: true });
+    setTimeout(hide, 2000);
+})();
 
 // Navigation active link animation
 document.addEventListener('DOMContentLoaded', function() {
@@ -304,65 +308,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (link.getAttribute('href').slice(1) === current) {
                 link.classList.add('active');
             }
-        });
-    });
-});
-
-// Project filter animation
-document.addEventListener('DOMContentLoaded', function() {
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const projectCards = document.querySelectorAll('.project-card');
-    if (!window.gsap) {
-        return;
-    }
-
-    filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const filter = this.getAttribute('data-filter');
-
-            // Update active button
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-
-            // Animate projects
-            projectCards.forEach(card => {
-                const category = card.getAttribute('data-category');
-                const status = card.getAttribute('data-status');
-
-                if (filter === 'all') {
-                    gsap.to(card, {
-                        opacity: 1,
-                        duration: 0.4,
-                        display: 'block'
-                    });
-                } else if (filter === 'completed' || filter === 'ongoing') {
-                    if (status === filter) {
-                        gsap.to(card, {
-                            opacity: 1,
-                            duration: 0.4,
-                            display: 'block'
-                        });
-                    } else {
-                        gsap.to(card, {
-                            opacity: 0.3,
-                            duration: 0.4
-                        });
-                    }
-                } else {
-                    if (category === filter) {
-                        gsap.to(card, {
-                            opacity: 1,
-                            duration: 0.4,
-                            display: 'block'
-                        });
-                    } else {
-                        gsap.to(card, {
-                            opacity: 0.3,
-                            duration: 0.4
-                        });
-                    }
-                }
-            });
         });
     });
 });

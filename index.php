@@ -2,12 +2,17 @@
 // Oxionex Web Solutions - Main Portfolio Website
 // Modern, Premium, Highly Animated Portfolio
 
-session_start();
+require_once __DIR__ . '/includes/form-security.php';
+oxionex_start_secure_session();
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 
 // Database connection
 require_once 'includes/db.php';
+
+$siteUrl = defined('SITE_URL') ? rtrim(SITE_URL, '/') : ('https://' . ($_SERVER['HTTP_HOST'] ?? 'oxionex.com'));
+$canonicalPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
+$canonicalUrl = $siteUrl . $canonicalPath;
 
 // Get projects for filter
 try {
@@ -15,7 +20,8 @@ try {
     $services = $pdo->query("SELECT * FROM services WHERE is_active = 1 ORDER BY sort_order ASC, created_at DESC")->fetchAll(PDO::FETCH_ASSOC);
     $testimonials = $pdo->query("SELECT * FROM testimonials WHERE is_active = 1 ORDER BY created_at DESC")->fetchAll(PDO::FETCH_ASSOC);
     $statistics = $pdo->query("SELECT * FROM statistics ORDER BY sort_order ASC")->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
+} catch (Throwable $e) {
+    error_log('Homepage data load failed: ' . $e->getMessage());
     $projects = [];
     $services = [];
     $testimonials = [];
@@ -41,6 +47,33 @@ if (empty($services)) {
     <meta name="description" content="Oxionex Web Solutions - Premium Web Design, Development, and Digital Solutions. We create stunning websites that convert visitors into paying clients.">
     <meta name="keywords" content="web design, web development, eCommerce, admin dashboard, SaaS, digital agency">
     <meta name="author" content="Oxionex Web Solutions">
+    <link rel="canonical" href="<?php echo htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8'); ?>">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Oxionex Web Solutions">
+    <meta property="og:title" content="Oxionex Web Solutions - Premium Web Design &amp; Development">
+    <meta property="og:description" content="Web design, development, branding, digital marketing, and technical solutions for growing businesses.">
+    <meta property="og:url" content="<?php echo htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8'); ?>">
+    <meta property="og:image" content="<?php echo htmlspecialchars($siteUrl . '/assets/images/Untitled%20design.png', ENT_QUOTES, 'UTF-8'); ?>">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Oxionex Web Solutions">
+    <meta name="twitter:description" content="Web design, development, branding, digital marketing, and technical solutions for growing businesses.">
+    <meta name="twitter:image" content="<?php echo htmlspecialchars($siteUrl . '/assets/images/Untitled%20design.png', ENT_QUOTES, 'UTF-8'); ?>">
+
+    <script type="application/ld+json">
+        <?php echo json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'Organization',
+            'name' => defined('BUSINESS_NAME') ? BUSINESS_NAME : 'Oxionex Web Solutions',
+            'url' => $siteUrl,
+            'logo' => $siteUrl . '/assets/images/favicon.svg',
+            'email' => defined('BUSINESS_EMAIL') ? BUSINESS_EMAIL : '',
+            'telephone' => defined('BUSINESS_PHONE') ? BUSINESS_PHONE : '',
+            'address' => [
+                '@type' => 'PostalAddress',
+                'addressLocality' => defined('BUSINESS_LOCATION') ? BUSINESS_LOCATION : '',
+            ],
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?>
+    </script>
 
     <script>
         (function() {
@@ -64,6 +97,7 @@ if (empty($services)) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Brand fonts -->
+    <link rel="preconnect" href="https://api.fontshare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,600,700,800&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
@@ -81,6 +115,7 @@ if (empty($services)) {
     <title>Oxionex Web Solutions - Premium Web Design & Development</title>
 </head>
 <body>
+    <noscript><style>#preloader { display: none !important; }</style></noscript>
     <!-- Preloader -->
     <div id="preloader" class="preloader">
         <div class="preloader-content">
@@ -95,6 +130,8 @@ if (empty($services)) {
 
     <!-- Navigation Header -->
     <?php include 'includes/header.php'; ?>
+
+    <main id="main-content">
 
     <!-- HERO SECTION -->
     <section id="hero" class="hero-section">
@@ -235,20 +272,20 @@ if (empty($services)) {
 
             <!-- Filter Buttons -->
             <div class="filter-container text-center mb-5">
-                <button class="filter-btn active" data-filter="all">All Projects</button>
-                <button class="filter-btn" data-filter="completed">Completed</button>
-                <button class="filter-btn" data-filter="ongoing">Ongoing</button>
-                <button class="filter-btn" data-filter="ecommerce">eCommerce</button>
-                <button class="filter-btn" data-filter="business">Business</button>
-                <button class="filter-btn" data-filter="portfolio">Portfolio</button>
-                <button class="filter-btn" data-filter="custom">Custom Systems</button>
-                <button class="filter-btn" data-filter="dashboard">Dashboards</button>
+                <button class="filter-btn active" data-filter="all" aria-pressed="true">All Projects</button>
+                <button class="filter-btn" data-filter="completed" aria-pressed="false">Completed</button>
+                <button class="filter-btn" data-filter="ongoing" aria-pressed="false">Ongoing</button>
+                <button class="filter-btn" data-filter="ecommerce" aria-pressed="false">eCommerce</button>
+                <button class="filter-btn" data-filter="business" aria-pressed="false">Business</button>
+                <button class="filter-btn" data-filter="portfolio" aria-pressed="false">Portfolio</button>
+                <button class="filter-btn" data-filter="custom" aria-pressed="false">Custom Systems</button>
+                <button class="filter-btn" data-filter="dashboard" aria-pressed="false">Dashboards</button>
             </div>
 
             <!-- Projects Grid -->
             <div class="projects-grid" id="projectsContainer">
                 <?php foreach ($projects as $project): ?>
-                <div class="project-card" data-project-id="<?php echo $project['id']; ?>" data-category="<?php echo htmlspecialchars($project['category']); ?>" data-status="<?php echo htmlspecialchars($project['status']); ?>" onclick="openProjectPreview(<?php echo $project['id']; ?>, this)" style="cursor: pointer;">
+                <div class="project-card" role="button" tabindex="0" aria-label="View project <?php echo htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8'); ?>" data-project-id="<?php echo $project['id']; ?>" data-category="<?php echo htmlspecialchars($project['category']); ?>" data-status="<?php echo htmlspecialchars($project['status']); ?>" onclick="openProjectPreview(<?php echo $project['id']; ?>, this)" style="cursor: pointer;">
                     <div class="project-image">
                         <img src="<?php echo htmlspecialchars($project['image']); ?>" alt="<?php echo htmlspecialchars($project['title']); ?>" class="img-fluid">
                         <div class="project-overlay">
@@ -267,7 +304,7 @@ if (empty($services)) {
                                     <button class="btn btn-sm btn-primary-glow" onclick="event.stopPropagation(); openProjectPreview(<?php echo $project['id']; ?>, this.closest('.project-card'))">
                                         <i class="fas fa-eye"></i> Live Preview
                                     </button>
-                                    <?php if (!empty($project['live_link'])): ?>
+                                    <?php if (!empty($project['live_link']) && $project['live_link'] !== '#'): ?>
                                     <a href="<?php echo htmlspecialchars($project['live_link']); ?>" target="_blank" class="btn btn-sm btn-outline-light" onclick="event.stopPropagation();">
                                         <i class="fas fa-external-link"></i> Visit Site
                                     </a>
@@ -504,23 +541,29 @@ if (empty($services)) {
             <div class="row g-4">
                 <div class="col-lg-8">
                     <form id="contactForm" class="contact-form">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
+                        <input type="hidden" name="form_started_at" value="<?php echo time(); ?>">
+                        <div class="hp-field" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text" class="form-control bg-dark border-secondary text-light" id="name" name="name" placeholder="Your Name" required>
                                     <label for="name">Your Name</label>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="email" class="form-control bg-dark border-secondary text-light" id="email" name="email" placeholder="Your Email" required>
                                     <label for="email">Your Email</label>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="tel" class="form-control bg-dark border-secondary text-light" id="phone" name="phone" placeholder="Phone Number">
                                     <label for="phone">Phone Number</label>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -554,6 +597,7 @@ if (empty($services)) {
                                 <div class="form-floating">
                                     <textarea class="form-control bg-dark border-secondary text-light" id="message" name="message" placeholder="Tell us about your project" style="min-height: 150px;" required></textarea>
                                     <label for="message">Message</label>
+                                    <div class="invalid-feedback"></div>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -575,7 +619,7 @@ if (empty($services)) {
                             </div>
                             <div class="contact-details">
                                 <h4>Email</h4>
-                                <p><a href="mailto:hello@oxionex.com">hello@oxionex.com</a></p>
+                                <p><a href="mailto:<?php echo htmlspecialchars(BUSINESS_EMAIL, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars(BUSINESS_EMAIL, ENT_QUOTES, 'UTF-8'); ?></a></p>
                             </div>
                         </div>
 
@@ -622,26 +666,15 @@ if (empty($services)) {
         </div>
     </section>
 
+    </main>
+
     <!-- FOOTER -->
     <?php include 'includes/footer.php'; ?>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-    
-    <!-- GSAP Animation Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    
     <!-- Custom JS Files -->
-    <script src="assets/js/particles.js?v=4"></script>
-    <script src="assets/js/animations.js?v=4"></script>
-    <script src="assets/js/project-preview.js?v=4"></script>
-    <script src="assets/js/main.js?v=4"></script>
-    <script src="assets/js/navbar-height.js?v=4"></script>
+    <script defer src="assets/js/animations.js?v=4"></script>
+    <script defer src="assets/js/project-preview.js?v=4"></script>
+    <script defer src="assets/js/main.js?v=4"></script>
+    <script defer src="assets/js/navbar-height.js?v=4"></script>
 </body>
 </html>

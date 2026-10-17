@@ -10,7 +10,7 @@
 
     // ─── Image Fallbacks ─────────────────────────────────────────
     function applyImageFallbacks() {
-        const fallbackSrc = 'static/images/placeholder.svg';
+        const fallbackSrc = 'assets/images/placeholder.svg';
 
         document.querySelectorAll('img').forEach(function (img) {
             var handleError = function () {
@@ -190,8 +190,15 @@
         function setMenuState(isOpen) {
             mobileMenu.classList.toggle('open', isOpen);
             mobileMenu.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+            mobileMenu.toggleAttribute('inert', !isOpen);
             hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
             document.documentElement.classList.toggle('mobile-menu-open', isOpen);
+            if (isOpen) {
+                var firstLink = mobileMenu.querySelector('.mobile-menu-link, .mobile-menu-close');
+                if (firstLink) firstLink.focus();
+            } else {
+                hamburger.focus();
+            }
         }
 
         hamburger.addEventListener('click', function () {
@@ -208,7 +215,22 @@
             if (event.key === 'Escape') {
                 setMenuState(false);
             }
+            if (event.key === 'Tab' && mobileMenu.classList.contains('open')) {
+                var focusable = mobileMenu.querySelectorAll('button, a[href], input, select, textarea');
+                if (!focusable.length) return;
+                var first = focusable[0];
+                var last = focusable[focusable.length - 1];
+                if (event.shiftKey && document.activeElement === first) {
+                    event.preventDefault();
+                    last.focus();
+                } else if (!event.shiftKey && document.activeElement === last) {
+                    event.preventDefault();
+                    first.focus();
+                }
+            }
         });
+
+        mobileMenu.toggleAttribute('inert', true);
     }
 
     // ─── Accessibility: Skip Link ────────────────────────────────
@@ -230,6 +252,8 @@
         var contactForm = document.getElementById('contactForm');
         var formMessage = document.getElementById('formMessage');
         if (!contactForm || !formMessage) return;
+        if (contactForm.dataset.bound === 'true') return;
+        contactForm.dataset.bound = 'true';
 
         // Restore auto-saved data
         try {
@@ -252,46 +276,32 @@
             } catch (e) {}
         }, 500));
 
-        // Validation on submit (first listener)
-        contactForm.addEventListener('submit', function (e) {
-            var name    = (document.getElementById('name')    || {}).value || '';
-            var email   = (document.getElementById('email')   || {}).value || '';
-            var phone   = (document.getElementById('phone')   || {}).value || '';
+        contactForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            var name    = (document.getElementById('name') || {}).value || '';
+            var email   = (document.getElementById('email') || {}).value || '';
+            var phone   = (document.getElementById('phone') || {}).value || '';
             var message = (document.getElementById('message') || {}).value || '';
-
-            name    = name.trim();
-            email   = email.trim();
-            phone   = phone.trim();
-            message = message.trim();
-
             var isValid = true;
 
-            if (!name || name.length < 3) {
+            if (!name.trim() || name.trim().length < 3) {
                 showFieldError('name', 'Name must be at least 3 characters');
                 isValid = false;
             } else { clearFieldError('name'); }
-
-            if (!email || !validateEmail(email)) {
+            if (!email.trim() || !validateEmail(email.trim())) {
                 showFieldError('email', 'Please enter a valid email');
                 isValid = false;
             } else { clearFieldError('email'); }
-
-            if (phone && !validatePhone(phone)) {
+            if (phone.trim() && !validatePhone(phone.trim())) {
                 showFieldError('phone', 'Please enter a valid phone number');
                 isValid = false;
             } else { clearFieldError('phone'); }
-
-            if (!message || message.length < 10) {
+            if (!message.trim() || message.trim().length < 10) {
                 showFieldError('message', 'Message must be at least 10 characters');
                 isValid = false;
             } else { clearFieldError('message'); }
-
-            if (!isValid) e.preventDefault();
-        });
-
-        // AJAX submission (second listener)
-        contactForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
+            if (!isValid) return;
 
             var formData     = new FormData(this);
             var submitButton = this.querySelector('button[type="submit"]');
@@ -341,6 +351,20 @@
     }
 
     // ─── Portfolio Filter ────────────────────────────────────────
+    function initProjectCardAccessibility() {
+        document.querySelectorAll('.project-card[role="button"]').forEach(function (card) {
+            if (card.dataset.keyboardBound === 'true') return;
+            card.dataset.keyboardBound = 'true';
+            card.addEventListener('keydown', function (event) {
+                if (event.key !== 'Enter' && event.key !== ' ') return;
+                event.preventDefault();
+                if (typeof openProjectPreview === 'function') {
+                    openProjectPreview(card.dataset.projectId, card);
+                }
+            });
+        });
+    }
+
     function initPortfolioFilter() {
         var filterButtons = document.querySelectorAll('.filter-btn');
         if (!filterButtons.length) return;
@@ -349,8 +373,10 @@
             button.addEventListener('click', function () {
                 var filter = this.getAttribute('data-filter');
 
-                filterButtons.forEach(function (btn) { btn.classList.remove('active'); });
-                this.classList.add('active');
+                filterButtons.forEach(function (btn) {
+                    btn.classList.toggle('active', btn === button);
+                    btn.setAttribute('aria-pressed', btn === button ? 'true' : 'false');
+                });
 
                 document.querySelectorAll('.project-card').forEach(function (card) {
                     var category = card.getAttribute('data-category');
@@ -365,7 +391,8 @@
                         show = category === filter;
                     }
 
-                    if (show) { gsapShow(card); } else { gsapHide(card); }
+                    card.hidden = !show;
+                    card.classList.toggle('is-hidden', !show);
                 });
             });
         });
@@ -470,9 +497,7 @@
 
     // ─── Browser Notifications ───────────────────────────────────
     function initNotifications() {
-        if ('Notification' in window && Notification.permission === 'default') {
-            Notification.requestPermission();
-        }
+        // Notifications require an explicit user action; never prompt on load.
     }
 
     // ─── Statistics (AJAX refresh) ───────────────────────────────
@@ -521,6 +546,7 @@
         initializeThemeToggle();
         initializeHamburgerMenu();
         initContactForm();
+        initProjectCardAccessibility();
         initPortfolioFilter();
         initSmoothScroll();
         initNavScrollLinks();
@@ -529,7 +555,6 @@
         initTooltips();
         initKeyboardShortcuts();
         initPrintEvents();
-        initNotifications();
         injectSkipLink();
         printConsoleGreeting();
     });

@@ -2279,6 +2279,16 @@ nav.navbar {
     border-color: #000000;
 }
 
+:focus-visible {
+    outline: 3px solid #171e19;
+    outline-offset: 4px;
+}
+
+.process-section :focus-visible,
+footer :focus-visible {
+    outline-color: #ffe17c;
+}
+
 .hero-image-frame,
 .floating-card {
     background: #ffffff;
@@ -2295,6 +2305,7 @@ nav.navbar {
     background: #b7c6c2;
     color: #000000;
     border: 2px solid #000000;
+    -webkit-text-fill-color: #000000;
 }
 
 .services-section,
@@ -2350,6 +2361,32 @@ nav.navbar {
     color: #000000;
 }
 
+.service-points li {
+    color: #000000;
+}
+
+.service-collapse {
+    border-top: 2px solid #000000;
+}
+
+.project-image {
+    background: #b7c6c2;
+}
+
+.project-image img {
+    filter: grayscale(1) contrast(1.08);
+}
+
+.project-overlay {
+    background: rgba(23, 30, 25, 0.92);
+    backdrop-filter: none;
+}
+
+.project-info h4,
+.project-category {
+    color: #000000;
+}
+
 .filter-btn {
     background: #ffffff;
 }
@@ -2380,6 +2417,19 @@ footer {
     border-top: 2px solid #000000;
 }
 
+.process-step {
+    background: #272727;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    box-shadow: 4px 4px 0 #000000;
+    backdrop-filter: none;
+}
+
+.process-step:hover {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+}
+
 .process-section .section-title,
 .process-section .section-label,
 .process-section h3,
@@ -2394,6 +2444,15 @@ footer .logo {
 footer p,
 footer a,
 footer li {
+    color: #b7c6c2;
+}
+
+.process-step h3 {
+    color: #ffffff;
+    -webkit-text-fill-color: #ffffff;
+}
+
+.process-step p {
     color: #b7c6c2;
 }
 
@@ -2437,6 +2496,14 @@ footer li {
 
 .form-floating > label {
     color: #272727;
+}
+
+.hp-field {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
 }
 
 .social-link {

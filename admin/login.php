@@ -4,7 +4,8 @@
  * Secure authentication for admin panel
  */
 
-session_start();
+require_once '../includes/form-security.php';
+oxionex_start_secure_session();
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 
@@ -21,14 +22,18 @@ $error = '';
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_admin_csrf();
     $username = isset($_POST['username']) ? trim($_POST['username']) : '';
-    $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+    $password = isset($_POST['password']) ? (string) $_POST['password'] : '';
     
     if (empty($username) || empty($password)) {
         $error = 'Please enter username and password.';
     } else {
         try {
-            if (!$pdo) {
+            if (strlen($username) > 100 || admin_login_is_locked($username)) {
+                $error = 'Invalid username or password.';
+                admin_record_login_failure($username);
+            } elseif (!$pdo) {
                 $error = 'Database connection error. Please try again later.';
             } else {
                 $query = "SELECT id, username, password FROM admin_users WHERE username = ?";
@@ -37,14 +42,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $user = $stmt->fetch();
                 
                 if ($user && password_verify($password, $user['password'])) {
+                    session_regenerate_id(true);
+                    admin_clear_login_failures($username);
                     $_SESSION['admin_id'] = $user['id'];
                     $_SESSION['admin_username'] = $user['username'];
                     $_SESSION['last_activity'] = time();
-                    header('Location: dashboard.php');
+                    $_SESSION['force_password_change'] = hash_equals(
+                        '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+                        (string) $user['password']
+                    );
+                    header('Location: ' . ($_SESSION['force_password_change'] ? 'change_password.php' : 'dashboard.php'));
                     exit;
                 } else {
                     $error = 'Invalid username or password.';
-                    error_log('Failed login attempt for username: ' . htmlspecialchars($username));
+                    admin_record_login_failure($username);
+                    error_log('Failed admin login attempt.');
                 }
             }
         } catch (PDOException $e) {
@@ -182,6 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form method="POST">
+            <?php echo admin_csrf_field(); ?>
             <div class="form-group">
                 <label class="form-label" for="username">Username</label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
@@ -196,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
 
         <div style="text-align: center; margin-top: 30px; color: #a0aec0; font-size: 12px;">
-            <p>Default credentials: admin / admin123</p>
+            <p>Use the administrator credentials configured for this installation.</p>
             <p><a href="/" style="color: #00d4ff; text-decoration: none;">Back to Website</a></p>
         </div>
     </div>

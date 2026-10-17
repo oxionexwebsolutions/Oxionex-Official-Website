@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once '../includes/form-security.php';
+oxionex_start_secure_session();
 if (!isset($_SESSION['admin_id'])) {
     header('Location: login.php');
     exit;
@@ -40,18 +41,25 @@ if (!$pdo) {
 
 // Handle update
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_admin_csrf();
     $title = $_POST['title'] ?? '';
     $short_description = $_POST['short_description'] ?? '';
     $description = $_POST['description'] ?? '';
     $category = $_POST['category'] ?? '';
     $technologies = $_POST['technologies'] ?? '';
-    $status = $_POST['status'] ?? 'upcoming';
+    $status = $_POST['status'] ?? 'completed';
     $live_link = $_POST['live_link'] ?? '';
     $featured = isset($_POST['featured']) ? 1 : 0;
     $image = $_POST['image'] ?? '';
 
+    $allowedCategories = ['ecommerce', 'business', 'portfolio', 'custom', 'dashboard'];
+    $allowedStatuses = ['ongoing', 'completed'];
     if (!$title || !$short_description) {
         $error = 'Title and short description are required.';
+    } elseif (!in_array($category, $allowedCategories, true) || !in_array($status, $allowedStatuses, true)) {
+        $error = 'Invalid project category or status.';
+    } elseif (!valid_project_url($live_link) || ($image !== '' && !valid_project_url($image))) {
+        $error = 'Image and live link URLs must use http or https.';
     } else if (!$pdo) {
         $error = 'Database connection error.';
     } else {
@@ -116,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <li><a href="inquiries.php"><i class="fas fa-envelope"></i> Inquiries</a></li>
                 <li><a href="services.php"><i class="fas fa-tools"></i> Services</a></li>
                 <li><a href="testimonials.php"><i class="fas fa-star"></i> Testimonials</a></li>
-                <li style="margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;"><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li style="margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;"><?php echo admin_logout_form(); ?></li>
             </ul>
         </div>
         <div class="main-content">
@@ -130,6 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <form method="POST" class="form-container">
+                <?php echo admin_csrf_field(); ?>
                 <div class="form-group">
                     <label for="title">Project Title</label>
                     <input type="text" id="title" name="title" required value="<?php echo htmlspecialchars($project['title']); ?>">
@@ -153,10 +162,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="form-group">
                     <label for="category">Category</label>
                     <select id="category" name="category">
-                        <option value="web" <?php echo $project['category'] === 'web' ? 'selected' : ''; ?>>Web Design</option>
-                        <option value="app" <?php echo $project['category'] === 'app' ? 'selected' : ''; ?>>App Development</option>
-                        <option value="branding" <?php echo $project['category'] === 'branding' ? 'selected' : ''; ?>>Branding</option>
-                        <option value="other" <?php echo $project['category'] === 'other' ? 'selected' : ''; ?>>Other</option>
+                        <option value="ecommerce" <?php echo $project['category'] === 'ecommerce' ? 'selected' : ''; ?>>eCommerce</option>
+                        <option value="business" <?php echo $project['category'] === 'business' ? 'selected' : ''; ?>>Business</option>
+                        <option value="portfolio" <?php echo $project['category'] === 'portfolio' ? 'selected' : ''; ?>>Portfolio</option>
+                        <option value="custom" <?php echo $project['category'] === 'custom' ? 'selected' : ''; ?>>Custom</option>
+                        <option value="dashboard" <?php echo $project['category'] === 'dashboard' ? 'selected' : ''; ?>>Dashboard</option>
                     </select>
                 </div>
 
@@ -169,8 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="status">Status</label>
                     <select id="status" name="status">
                         <option value="completed" <?php echo $project['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
-                        <option value="upcoming" <?php echo $project['status'] === 'upcoming' ? 'selected' : ''; ?>>Upcoming</option>
-                        <option value="in-progress" <?php echo $project['status'] === 'in-progress' ? 'selected' : ''; ?>>In Progress</option>
+                        <option value="ongoing" <?php echo $project['status'] === 'ongoing' ? 'selected' : ''; ?>>Ongoing</option>
                     </select>
                 </div>
 

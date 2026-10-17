@@ -486,13 +486,6 @@ img {
     height: auto;
 }
 
-.container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
 .desktop-only {
     display: block;
 }
@@ -528,15 +521,6 @@ img {
 
     .hero-content {
         text-align: left;
-    }
-
-    .services-grid,
-    .projects-grid {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: var(--spacing-lg) !important;
-        justify-content: center !important;
-        align-items: stretch !important;
     }
 
     .services-grid .service-card {
@@ -579,14 +563,6 @@ img {
 
     .hero-visual {
         height: 420px;
-    }
-
-    .services-grid,
-    .projects-grid {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        gap: var(--spacing-lg) !important;
-        justify-content: center !important;
     }
 
     .services-grid .service-card,
@@ -711,84 +687,6 @@ img {
         transform: translateY(-7px) rotate(-45deg);
     }
 
-    .mobile-menu {
-        position: fixed;
-        inset: 0;
-        background: rgba(5, 7, 20, 0.72);
-        backdrop-filter: blur(10px);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity var(--transition-smooth);
-        z-index: 2000;
-    }
-
-    .mobile-menu.open {
-        opacity: 1;
-        pointer-events: auto;
-    }
-
-    .mobile-menu-panel {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: min(88vw, 360px);
-        height: 100%;
-        background: var(--page-surface);
-        border-left: 1px solid var(--page-border);
-        box-shadow: -20px 0 50px rgba(0, 0, 0, 0.35);
-        padding: 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.35rem;
-        transform: translateX(0);
-    }
-
-    .mobile-menu-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.5rem 0 1rem;
-        margin-bottom: 0.5rem;
-        border-bottom: 1px solid var(--page-border);
-    }
-
-    .mobile-menu-brand {
-        font-weight: 800;
-        font-size: 1.1rem;
-        color: var(--page-text);
-    }
-
-    .mobile-menu-close {
-        width: 44px;
-        height: 44px;
-        border: 0;
-        border-radius: 12px;
-        background: var(--toggle-bg);
-        color: var(--page-text);
-        font-size: 1.6rem;
-        line-height: 1;
-        cursor: pointer;
-    }
-
-    .mobile-menu-link {
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        padding: 0.9rem 0.85rem;
-        border-radius: 14px;
-        color: var(--page-text);
-        text-decoration: none;
-        background: transparent;
-        transition: background var(--transition-smooth), color var(--transition-smooth), transform var(--transition-smooth);
-    }
-
-    .mobile-menu-link:hover,
-    .mobile-menu-link:focus {
-        background: rgba(0, 212, 255, 0.1);
-        color: var(--primary-color);
-        transform: translateX(2px);
-    }
-
     .hero-section {
         min-height: auto;
         padding-top: calc(var(--navbar-height) + 1rem);
@@ -886,36 +784,6 @@ img {
     .swiper-button-prev,
     .swiper-button-next {
         display: none !important;
-    }
-}
-
-/* ======================================================
-   FORCE FLEX LAYOUT FOR GRIDS ON LARGER SCREENS
-   Ensures incomplete last rows are centered and cards
-   keep equal heights. Mobile rules below still apply.
-   ====================================================== */
-@media (min-width: 769px) {
-    .projects-grid,
-    .services-grid {
-        display: flex !important;
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        align-items: stretch !important;
-        gap: var(--spacing-lg) !important;
-    }
-
-    .projects-grid .project-card,
-    .services-grid .service-card {
-        flex: 1 1 320px !important;
-        max-width: 420px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        height: 100% !important;
-        min-height: 340px !important;
-    }
-
-    .project-info {
-        flex: 1 1 auto !important;
     }
 }
 
@@ -1420,13 +1288,6 @@ img {
    DARK MODE PREFERENCE
    ====================================================== */
 
-@media (prefers-color-scheme: dark) {
-    body {
-        background: var(--dark-bg);
-        color: var(--light-text);
-    }
-}
-
 /* ======================================================
    HIGH CONTRAST MODE
    ====================================================== */
@@ -1483,38 +1344,199 @@ img {
 }
 
 /* ======================================================
-   LARGE SCREENS - 4-COLUMN GRID + PYRAMID CENTERING
-   Forces equal-height cards and centers the final row when
-   layout shows 4 cards on the first row and 2 on the second.
+   CONSOLIDATED RESPONSIVE OVERRIDES
+   One drawer breakpoint, real grid tracks, and stable filters.
    ====================================================== */
+
+.hamburger,
+.mobile-menu,
+.navbar-toggler {
+    display: none !important;
+}
+
+.mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(23, 30, 25, 0.92);
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mobile-menu.open {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.mobile-menu-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(88vw, 360px);
+    height: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    background: var(--page-surface);
+    border-left: 2px solid #000000;
+    box-shadow: -8px 0 0 #000000;
+}
+
+.mobile-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0 1rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--page-border);
+}
+
+.mobile-menu-brand {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--page-text);
+}
+
+.mobile-menu-close,
+.mobile-menu-link {
+    min-height: 44px;
+    border: 2px solid var(--page-border);
+    border-radius: 4px;
+}
+
+.mobile-menu-close {
+    width: 44px;
+    background: var(--toggle-bg);
+    color: var(--page-text);
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.mobile-menu-link {
+    display: flex;
+    align-items: center;
+    padding: 0.9rem 0.85rem;
+    color: var(--page-text);
+    text-decoration: none;
+    background: transparent;
+}
+
+.mobile-menu-link:hover,
+.mobile-menu-link:focus {
+    background: var(--primary-color);
+    color: #000000;
+}
+
+.mobile-menu[inert] {
+    visibility: hidden;
+}
+
+.project-card[hidden] {
+    display: none !important;
+}
+
+.project-card {
+    opacity: 1;
+    animation: none;
+}
+
+.hero-section {
+    min-height: 100vh;
+    min-height: 100svh;
+}
+
+@media (min-height: 900px) {
+    .hero-section {
+        min-height: min(900px, 100svh);
+    }
+}
+
+@media (min-width: 992px) {
+    .navbar-collapse {
+        display: flex !important;
+    }
+
+    .services-grid,
+    .projects-grid {
+        display: grid !important;
+        align-items: start !important;
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .projects-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .services-grid .service-card,
+    .projects-grid .project-card {
+        width: auto;
+        max-width: none;
+        min-height: 0;
+        height: auto;
+        flex: none;
+    }
+}
+
 @media (min-width: 1200px) {
-    .services-accordion-grid {
-        grid-template-columns: repeat(4, 1fr);
-        grid-auto-rows: 1fr;
-        align-items: stretch;
-        gap: var(--spacing-lg);
+    .services-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
-    .services-accordion-grid .service-card {
-        height: 100%;
-        min-height: 260px;
-        padding: 1.75rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
+    .projects-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    /* Center the last row (5th and 6th items) into the middle columns */
-    .services-accordion-grid .service-card:nth-child(5) {
-        grid-column: 2;
-    }
-
+    .services-accordion-grid .service-card:nth-child(5),
     .services-accordion-grid .service-card:nth-child(6) {
-        grid-column: 3;
+        grid-column: auto;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .services-grid,
+    .projects-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start !important;
     }
 
-    .services-accordion-grid .service-collapse {
-        margin-top: 1rem;
-        padding-top: 1rem;
+    .services-grid .service-card,
+    .projects-grid .project-card {
+        width: auto;
+        max-width: none;
+        min-height: 0;
+        height: auto;
+        flex: none;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .navbar-collapse,
+    .navbar-toggler {
+        display: none !important;
+    }
+
+    .hamburger {
+        display: inline-flex !important;
+    }
+
+    .mobile-menu {
+        display: block !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .services-grid,
+    .projects-grid {
+        display: grid !important;
+        grid-template-columns: 1fr;
+        align-items: start !important;
     }
 }

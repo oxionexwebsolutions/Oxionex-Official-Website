@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once '../includes/form-security.php';
+oxionex_start_secure_session();
 if (!isset($_SESSION['admin_id'])) {
     header('Location: login.php');
     exit;
@@ -31,6 +32,7 @@ if ($pdo) {
 
 // Handle status update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submission_id']) && isset($_POST['action'])) {
+    require_admin_csrf();
     $submission_id = intval($_POST['submission_id']);
     $action = $_POST['action'];
     
@@ -137,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submission_id']) && i
                 <li><a href="services.php"><i class="fas fa-cogs"></i> Services</a></li>
                 <li><a href="testimonials.php"><i class="fas fa-star"></i> Testimonials</a></li>
                 <li style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-                    <a href="logout.php" style="color: #ff006e;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    <?php echo admin_logout_form(); ?>
                 </li>
             </ul>
         </div>
@@ -217,18 +219,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submission_id']) && i
             
             <div class="action-buttons">
                 <form method="POST" style="flex: 1;">
+                    <?php echo admin_csrf_field(); ?>
                     <input type="hidden" id="submissionId" name="submission_id">
                     <button type="submit" name="action" value="mark_reviewed" class="btn-action btn-reviewed" style="width: 100%;">
                         <i class="fas fa-check"></i> Mark as Reviewed
                     </button>
                 </form>
                 <form method="POST" style="flex: 1;">
+                    <?php echo admin_csrf_field(); ?>
                     <input type="hidden" id="submissionId2" name="submission_id">
                     <button type="submit" name="action" value="mark_new" class="btn-action btn-reviewed" style="width: 100%;">
                         <i class="fas fa-exclamation-circle"></i> Mark as New
                     </button>
                 </form>
                 <form method="POST" style="flex: 1;" onsubmit="return confirm('Are you sure you want to delete this submission?');">
+                    <?php echo admin_csrf_field(); ?>
                     <input type="hidden" id="submissionId3" name="submission_id">
                     <button type="submit" name="action" value="delete" class="btn-action btn-delete" style="width: 100%;">
                         <i class="fas fa-trash"></i> Delete

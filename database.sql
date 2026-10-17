@@ -96,10 +96,4 @@ INSERT INTO testimonials (client_name, client_role, client_company, client_image
 ('Priya Desai', 'Marketing Head', 'GreenPath Organics', 'assets/images/client4.jpg', 5, 'We needed a complete digital transformation and Oxionex delivered beyond what we imagined. Our website now looks better than international competitors!'),
 ('Mohammed Al-Rashid', 'Owner', 'AlRashid Enterprises', 'assets/images/client5.jpg', 5, 'From consultation to launch, the entire experience was premium. The team is professional, deadline-oriented, and the final product is absolutely world-class.');
 
--- Default admin user (password: admin123)
--- Hash generated using: password_hash('admin123', PASSWORD_BCRYPT)
-INSERT INTO admin_users (username, password, email) VALUES
-('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@oxionex.com');
-
--- Change default password in production!
--- To generate new hash: php -r "echo password_hash('newpassword', PASSWORD_BCRYPT);"
+-- Create the first administrator through the one-time admin/setup.php script.

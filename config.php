@@ -9,11 +9,24 @@
 // =============================================================================
 // DATABASE CONFIGURATION
 // =============================================================================
-define('DB_HOST', 'sql206.infinityfree.com');      // Database host
-define('DB_USER', 'if0_42061746');                 // Database username
-define('DB_PASS', 'OxionexWebSol');                // Database password
-define('DB_NAME', 'if0_42061746_oxionexwebsloutions'); // Database name
-define('DB_PORT', 3306);             // Database port
+// Keep deployment credentials in config.local.php, preferably one directory
+// above the web root. The repository contains only the placeholder example.
+$localConfigPaths = [
+	dirname(__DIR__) . '/config.local.php',
+	__DIR__ . '/config.local.php',
+];
+foreach ($localConfigPaths as $localConfigPath) {
+	if (is_readable($localConfigPath)) {
+		require_once $localConfigPath;
+		break;
+	}
+}
+
+define('DB_HOST', defined('DB_HOST') ? DB_HOST : '');
+define('DB_USER', defined('DB_USER') ? DB_USER : '');
+define('DB_PASS', defined('DB_PASS') ? DB_PASS : '');
+define('DB_NAME', defined('DB_NAME') ? DB_NAME : '');
+define('DB_PORT', defined('DB_PORT') ? DB_PORT : 3306);
 
 // =============================================================================
 // EMAIL CONFIGURATION
@@ -35,6 +48,7 @@ define('BUSINESS_PHONE', '+91 7048811552');
 define('BUSINESS_WHATSAPP', '+917048811552');
 define('BUSINESS_EMAIL', 'oxionexwebsolutions@gmail.com');
 define('BUSINESS_LOCATION', 'Rajkot, India');
+define('SITE_URL', defined('SITE_URL') ? SITE_URL : 'https://oxionex.com');
 
 // Social media links
 define('SOCIAL_INSTAGRAM', 'https://instagram.com/oxionex');
@@ -57,7 +71,7 @@ define('LOCKOUT_DURATION', 900);
 // ERROR HANDLING
 // =============================================================================
 // Show errors (false in production)
-define('DEBUG_MODE', true);
+define('DEBUG_MODE', false);
 
 // Log errors to file
 define('LOG_ERRORS', true);
@@ -70,19 +84,24 @@ define('LOG_FILE', __DIR__ . '/../logs/error.log');
 define('RATE_LIMIT_ENABLED', true);
 
 // Rate limit: max requests per minute from single IP
-define('RATE_LIMIT_REQUESTS', 60);
+define('RATE_LIMIT_REQUESTS', 10);
+define('RATE_LIMIT_WINDOW', 60);
+define('FORM_MIN_SECONDS', 3);
+define('FORM_MAX_SECONDS', 86400);
 
 // =============================================================================
 // UPLOAD CONFIGURATION
 // =============================================================================
 // Maximum file upload size (in bytes) - 5MB
 define('MAX_UPLOAD_SIZE', 5242880);
+define('MAX_UPLOAD_FILES', 5);
+define('MAX_UPLOAD_TOTAL_SIZE', 15728640);
 
 // =============================================================================
 // DEBUG / ERROR REPORTING
 // =============================================================================
-// Enable full error reporting during troubleshooting. Set DEBUG_MODE to true
-// to display errors on-page. In production set DEBUG_MODE to false.
+// Never display internal errors to visitors. Enable DEBUG_MODE only in a
+// private local environment when troubleshooting.
 error_reporting(E_ALL);
 if (defined('DEBUG_MODE') && DEBUG_MODE) {
 	ini_set('display_errors', '1');

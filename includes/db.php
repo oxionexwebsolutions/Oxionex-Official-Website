@@ -27,16 +27,6 @@ try {
         @mkdir(dirname(LOG_FILE), 0755, true);
         error_log('Database connection failed: ' . $e->getMessage() . "\n", 3, LOG_FILE);
     }
-    // If debugging is enabled, show the error details to the browser for diagnostics.
-    if (defined('DEBUG_MODE') && DEBUG_MODE) {
-        header('Content-Type: text/plain; charset=utf-8');
-        echo "Database connection failed: " . $e->getMessage() . "\n\n";
-        echo "DSN: mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . "\n";
-        echo "User: " . DB_USER . "\n";
-        // Stop execution to allow immediate debugging feedback on the deployed host
-        exit;
-    }
-
     // Send JSON response for AJAX requests
     if (strpos($_SERVER['REQUEST_URI'], '/ajax/') !== false) {
         header('Content-Type: application/json');

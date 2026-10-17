@@ -1,0 +1,8 @@
+config.local.php
+.env
+.env.*
+!.env.example
+uploads/
+logs/
+*.log
+*.sql

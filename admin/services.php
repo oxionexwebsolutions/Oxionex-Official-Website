@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once '../includes/form-security.php';
+oxionex_start_secure_session();
 if (!isset($_SESSION['admin_id'])) {
     header('Location: login.php');
     exit;
@@ -30,6 +31,7 @@ if (!$pdo) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$error) {
+    require_admin_csrf();
     $action = $_POST['action'] ?? 'save';
 
     if ($action === 'delete') {
@@ -164,7 +166,7 @@ $formValues = [
                 <li><a href="inquiries.php"><i class="fas fa-envelope"></i> Inquiries</a></li>
                 <li><a href="services.php" class="active"><i class="fas fa-tools"></i> Services</a></li>
                 <li><a href="testimonials.php"><i class="fas fa-star"></i> Testimonials</a></li>
-                <li style="margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;"><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li style="margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;"><?php echo admin_logout_form(); ?></li>
             </ul>
         </div>
         <div class="main-content">
@@ -189,6 +191,7 @@ $formValues = [
                             </div>
                         </div>
                         <form method="post">
+                            <?php echo admin_csrf_field(); ?>
                             <input type="hidden" name="id" value="<?php echo (int) $formValues['id']; ?>">
                             <input type="hidden" name="action" value="save">
                             <div class="form-grid">
@@ -281,6 +284,7 @@ $formValues = [
                                                 <td>
                                                     <a href="services.php?edit_id=<?php echo (int) $service['id']; ?>" class="btn btn-sm btn-outline-primary mb-2">Edit</a>
                                                     <form method="post" onsubmit="return confirm('Delete this service?');" style="display:inline;">
+                                                        <?php echo admin_csrf_field(); ?>
                                                         <input type="hidden" name="action" value="delete">
                                                         <input type="hidden" name="id" value="<?php echo (int) $service['id']; ?>">
                                                         <button type="submit" class="btn btn-sm btn-outline-danger mb-2">Delete</button>

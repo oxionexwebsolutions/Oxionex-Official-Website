@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once '../includes/form-security.php';
+oxionex_start_secure_session();
 if (!isset($_SESSION['admin_id'])) {
     header('Location: login.php');
     exit;
@@ -73,7 +74,7 @@ if ($pdo) {
                 <li><a href="inquiries.php" class="active"><i class="fas fa-envelope"></i> Inquiries</a></li>
                 <li><a href="services.php"><i class="fas fa-tools"></i> Services</a></li>
                 <li><a href="testimonials.php"><i class="fas fa-star"></i> Testimonials</a></li>
-                <li style="margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;"><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li style="margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;"><?php echo admin_logout_form(); ?></li>
             </ul>
         </div>
         <div class="main-content">

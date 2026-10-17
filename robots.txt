@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /ajax/
+Disallow: /includes/
+Disallow: /uploads/
+Sitemap: https://oxionex.com/sitemap.xml

@@ -6,13 +6,13 @@
 
 header('Content-Type: application/json');
 
-// Start session
-session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 
 // Require database
 require_once '../includes/db.php';
+require_once '../includes/form-security.php';
+oxionex_validate_form_request('contact');
 
 // Response object
 $response = [
@@ -34,6 +34,12 @@ $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
 $business_type = isset($_POST['business_type']) ? trim($_POST['business_type']) : '';
 $budget = isset($_POST['budget']) ? trim($_POST['budget']) : '';
 $message = isset($_POST['message']) ? trim($_POST['message']) : '';
+
+if (strlen($name) > 120 || strlen($email) > 254 || strlen($phone) > 40 || strlen($business_type) > 80 || strlen($budget) > 80 || strlen($message) > 5000) {
+    $response['message'] = 'Please shorten the submitted values and try again.';
+    echo json_encode($response);
+    exit;
+}
 
 // Validate inputs
 if (empty($name) || strlen($name) < 3) {
@@ -61,13 +67,14 @@ if (!empty($phone) && !preg_match('/^[\d\s+\-()]*$/', $phone)) {
     exit;
 }
 
-// Sanitize inputs
-$name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+// Store raw validated values. Escape only when rendering email HTML or UI.
 $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-$phone = htmlspecialchars($phone, ENT_QUOTES, 'UTF-8');
-$business_type = htmlspecialchars($business_type, ENT_QUOTES, 'UTF-8');
-$budget = htmlspecialchars($budget, ENT_QUOTES, 'UTF-8');
-$message = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+$htmlName = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+$htmlEmail = htmlspecialchars($email, ENT_QUOTES, 'UTF-8');
+$htmlPhone = htmlspecialchars($phone, ENT_QUOTES, 'UTF-8');
+$htmlBusinessType = htmlspecialchars($business_type, ENT_QUOTES, 'UTF-8');
+$htmlBudget = htmlspecialchars($budget, ENT_QUOTES, 'UTF-8');
+$htmlMessage = nl2br(htmlspecialchars($message, ENT_QUOTES, 'UTF-8'));
 
 // Try to insert into database
 try {
@@ -82,7 +89,7 @@ try {
         $admin_email = ADMIN_EMAIL;
         $sender_email = SENDER_EMAIL;
         $business_name = BUSINESS_NAME;
-        $subject = 'New Project Inquiry from ' . $name . ' - ' . $business_name;
+        $subject = 'New Project Inquiry from ' . preg_replace('/[\r\n]+/', ' ', $name) . ' - ' . $business_name;
         
         $email_body = "
         <html>
@@ -103,19 +110,19 @@ try {
                 </div>
                 
                 <div class='section'>
-                    <p><span class='label'>Name:</span> {$name}</p>
-                    <p><span class='label'>Email:</span> {$email}</p>
-                    <p><span class='label'>Phone:</span> {$phone}</p>
+                    <p><span class='label'>Name:</span> {$htmlName}</p>
+                    <p><span class='label'>Email:</span> {$htmlEmail}</p>
+                    <p><span class='label'>Phone:</span> {$htmlPhone}</p>
                 </div>
                 
                 <div class='section'>
-                    <p><span class='label'>Business Type:</span> {$business_type}</p>
-                    <p><span class='label'>Budget Range:</span> {$budget}</p>
+                    <p><span class='label'>Business Type:</span> {$htmlBusinessType}</p>
+                    <p><span class='label'>Budget Range:</span> {$htmlBudget}</p>
                 </div>
                 
                 <div class='section'>
                     <p><span class='label'>Message:</span></p>
-                    <p>{$message}</p>
+                    <p>{$htmlMessage}</p>
                 </div>
                 
                 <div class='footer'>
@@ -134,7 +141,7 @@ try {
         $headers .= "X-Mailer: Oxionex Web Solutions" . "\r\n";
         
         // Send email (use environment variable or config in production)
-        @mail($admin_email, $subject, $email_body, $headers);
+        $adminMailSent = mail($admin_email, $subject, $email_body, $headers);
         
         // Send confirmation email to user
         $user_subject = 'We Received Your Inquiry - ' . BUSINESS_NAME;
@@ -151,7 +158,7 @@ try {
         <body>
             <div class='container'>
                 <div class='header'>
-                    <h1>Thank You, {$name}!</h1>
+                    <h1>Thank You, {$htmlName}!</h1>
                 </div>
                 
                 <div class='message'>
@@ -174,10 +181,19 @@ try {
         $user_headers .= "From: " . SENDER_EMAIL . "\r\n";
         $user_headers .= "Reply-To: " . SUPPORT_EMAIL . "\r\n";
         
-        @mail($email, $user_subject, $user_body, $user_headers);
+        $userMailSent = mail($email, $user_subject, $user_body, $user_headers);
+
+        if (!$adminMailSent) {
+            error_log('Contact notification mail could not be sent.');
+        }
+        if (!$userMailSent) {
+            error_log('Contact confirmation mail could not be sent.');
+        }
         
         $response['success'] = true;
-        $response['message'] = 'Thank you! Your inquiry has been received. We will contact you soon.';
+        $response['message'] = $userMailSent
+            ? 'Thank you! Your inquiry has been received. We will contact you soon.'
+            : 'Your inquiry was saved successfully. We could not send the confirmation email, but our team can still review your request.';
     } else {
         $response['message'] = 'Failed to save your inquiry. Please try again.';
     }

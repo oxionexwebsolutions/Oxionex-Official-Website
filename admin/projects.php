@@ -3,7 +3,8 @@
  * Oxionex Web Solutions - Manage Projects
  */
 
-session_start();
+require_once '../includes/form-security.php';
+oxionex_start_secure_session();
 if (!isset($_SESSION['admin_id'])) {
     header('Location: login.php');
     exit;
@@ -18,14 +19,15 @@ verify_admin_session();
 $message = isset($_GET['added']) ? 'Project added successfully!' : '';
 $error = '';
 
-// Handle delete
-if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
+// Handle delete only through a CSRF-protected POST request.
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'delete' && is_numeric($_POST['id'] ?? null)) {
+    require_admin_csrf();
     if (!$pdo) {
         $error = 'Database connection error.';
     } else {
         try {
             $stmt = $pdo->prepare("DELETE FROM projects WHERE id = ?");
-            if ($stmt->execute([$_GET['delete']])) {
+            if ($stmt->execute([(int) $_POST['id']])) {
                 $message = 'Project deleted successfully.';
             }
         } catch (PDOException $e) {
@@ -197,7 +199,7 @@ if ($pdo) {
                 <li><a href="services.php"><i class="fas fa-tools"></i> Services</a></li>
                 <li><a href="testimonials.php"><i class="fas fa-star"></i> Testimonials</a></li>
                 <li style="margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;">
-                    <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    <?php echo admin_logout_form(); ?>
                 </li>
             </ul>
         </div>
@@ -239,7 +241,12 @@ if ($pdo) {
                             <td><?php echo date('M d, Y', strtotime($project['created_at'])); ?></td>
                             <td>
                                 <a href="edit_project.php?id=<?php echo $project['id']; ?>" class="btn-action btn-edit">Edit</a>
-                                <a href="?delete=<?php echo $project['id']; ?>" class="btn-action btn-delete" onclick="return confirm('Are you sure?');">Delete</a>
+                                <form method="post" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                                    <?php echo admin_csrf_field(); ?>
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="id" value="<?php echo (int) $project['id']; ?>">
+                                    <button type="submit" class="btn-action btn-delete">Delete</button>
+                                </form>
                             </td>
                         </tr>
                         <?php endforeach; ?>
