@@ -63,10 +63,10 @@ if (empty($services)) {
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts -->
+    <!-- Brand fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,600,700,800&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
     
     <!-- Swiper JS for Testimonials -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
@@ -110,15 +110,16 @@ if (empty($services)) {
             <div class="row align-items-start align-items-lg-center">
                 <div class="col-lg-6 hero-content">
                     <div class="hero-title">
+                        <span class="hero-badge">OXIONEX WEB SOLUTIONS</span>
                         <h1 class="display-1 fw-bold mb-4">
-                            <span class="gradient-text">Building Digital</span>
-                            <span class="gradient-text-secondary">Experiences</span>
-                            <span class="highlight-text"> That Sell.</span>
+                            <span class="gradient-text">Oxionex</span>
+                            <span class="gradient-text-secondary">Web Solutions</span>
+                            <span class="highlight-text"> That Move Business Forward.</span>
                         </h1>
                     </div>
 
                     <p class="hero-subtitle lead mb-5">
-                        We craft premium websites, web systems, eCommerce stores, admin panels, and modern digital solutions for ambitious businesses that demand excellence.
+                        We design websites, web systems, eCommerce stores, branding, and digital marketing solutions for businesses ready to grow.
                     </p>
 
                     <div class="hero-stats mb-5">

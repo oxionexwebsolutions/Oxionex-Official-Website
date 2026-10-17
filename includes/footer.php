@@ -12,7 +12,7 @@
                     <i class="fas fa-diamond"></i> Oxionex
                 </div>
                 <p class="mb-4">Building premium digital experiences that convert visitors into loyal clients. We specialize in modern web design, development, and digital solutions.</p>
-                <div class="social-footer-links">
+                <div class="social-links social-footer-links">
                     <a href="https://instagram.com/oxionex" target="_blank" title="Instagram" class="social-link instagram">
                         <i class="fab fa-instagram"></i>
                     </a>
