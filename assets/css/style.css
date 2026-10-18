@@ -2342,6 +2342,27 @@ footer :focus-visible {
     color: #111111 !important;
 }
 
+.card-icon i,
+.service-icon i,
+.why-us-icon i,
+.contact-icon i {
+    font-family: "Font Awesome 6 Free", "Font Awesome 5 Free";
+    font-weight: 900;
+    font-style: normal;
+    font-size: 1.35rem;
+    line-height: 1;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    background: none !important;
+}
+
+.service-card .service-kicker,
+.service-card .service-title-inline,
+.service-card .service-arrow {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+}
+
 .contact-icon i {
     background: none !important;
     -webkit-background-clip: unset !important;

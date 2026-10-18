@@ -614,3 +614,227 @@
         margin: 1rem;
     }
 }
+
+/* ======================================================
+   OXIONEX NEO-BRUTALIST PROJECT FORM
+   Final overrides for this page-specific stylesheet.
+   ====================================================== */
+
+.start-project-page {
+    min-height: 100svh;
+    padding: calc(var(--navbar-height) + 3rem) 0 4rem;
+    background: #ffe17c;
+    background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+    background-size: 32px 32px;
+}
+
+.sp-hero h1 {
+    background: none;
+    color: #000000;
+    -webkit-text-fill-color: #000000;
+    font-family: var(--font-heading);
+    font-size: clamp(2.4rem, 6vw, 5rem);
+    line-height: 0.95;
+}
+
+.sp-hero p,
+.sp-progress-label,
+.sp-helper-text,
+.sp-save-draft p {
+    color: #272727;
+}
+
+.sp-progress-container {
+    max-width: 900px;
+}
+
+.sp-progress-bar {
+    height: 12px;
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 0;
+    box-shadow: 4px 4px 0 #000000;
+}
+
+.sp-progress-fill {
+    background: #171e19;
+    box-shadow: none;
+}
+
+.sp-form-wrapper {
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    box-shadow: 8px 8px 0 #000000;
+    backdrop-filter: none;
+}
+
+.sp-step-header,
+.sp-button-group {
+    border-color: #000000;
+}
+
+.sp-step-number {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #b7c6c2;
+    border: 2px solid #000000;
+    color: #000000;
+    box-shadow: 4px 4px 0 #000000;
+}
+
+.sp-step-info h2,
+.sp-form-group label,
+.sp-service-title,
+.sp-save-draft,
+.sp-file-upload p,
+.sp-file-item-name {
+    color: #000000;
+}
+
+.sp-step-info p,
+.sp-form-group label .sp-required,
+.sp-required {
+    color: #272727;
+}
+
+.sp-form-group input,
+.sp-form-group textarea,
+.sp-form-group select {
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
+    border-radius: 4px;
+    box-shadow: none;
+}
+
+.sp-form-group input::placeholder,
+.sp-form-group textarea::placeholder {
+    color: #666666;
+}
+
+.sp-form-group input:focus,
+.sp-form-group textarea:focus,
+.sp-form-group select:focus {
+    background: #ffffff;
+    border-color: #000000;
+    box-shadow: 4px 4px 0 #000000;
+}
+
+.sp-form-group select {
+    background-image: none;
+}
+
+.sp-form-group select option {
+    background: #ffffff;
+    color: #000000;
+}
+
+.sp-service-title {
+    border-bottom: 2px solid #000000;
+}
+
+.sp-service-icon,
+.sp-file-icon {
+    background: none;
+    color: #000000;
+    -webkit-text-fill-color: #000000;
+}
+
+.sp-checkbox-item,
+.sp-radio-item,
+.sp-file-item {
+    background: #b7c6c2;
+    border: 2px solid #000000;
+    border-radius: 4px;
+}
+
+.sp-checkbox-item:hover,
+.sp-radio-item:hover,
+.sp-file-item:hover {
+    background: #ffe17c;
+    border-color: #000000;
+}
+
+.sp-checkbox-item input[type="checkbox"],
+.sp-radio-item input[type="radio"] {
+    accent-color: #171e19;
+}
+
+.sp-file-upload {
+    background: #ffffff;
+    border: 2px dashed #000000;
+    border-radius: 4px;
+}
+
+.sp-file-upload:hover,
+.sp-file-upload.dragover {
+    background: #b7c6c2;
+    border-color: #000000;
+    transform: translate(4px, 4px);
+}
+
+.sp-btn,
+.sp-modal-button {
+    min-height: 48px;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sp-btn-primary,
+.sp-btn-primary:hover,
+.sp-modal-button,
+.sp-modal-button:hover {
+    background: #000000;
+    color: #ffffff;
+    box-shadow: 8px 8px 0 #000000;
+}
+
+.sp-btn-secondary,
+.sp-btn-secondary:hover {
+    background: #ffffff;
+    color: #000000;
+    border-color: #000000;
+    box-shadow: 4px 4px 0 #000000;
+}
+
+.sp-btn:hover,
+.sp-modal-button:hover {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+}
+
+.sp-save-draft button {
+    color: #000000;
+}
+
+.sp-success-modal {
+    background: rgba(23, 30, 25, 0.88);
+}
+
+.sp-modal-content {
+    background: #ffffff;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    box-shadow: 8px 8px 0 #000000;
+}
+
+.sp-modal-content h2 {
+    color: #000000;
+}
+
+.sp-modal-content p {
+    color: #272727;
+}
+
+@media (max-width: 768px) {
+    .start-project-page {
+        padding-top: calc(var(--navbar-height) + 2rem);
+    }
+
+    .sp-form-wrapper {
+        padding: 1.25rem;
+    }
+}
