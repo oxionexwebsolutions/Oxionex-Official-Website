@@ -1361,7 +1361,7 @@ img {
     position: fixed;
     inset: 0;
     z-index: 2000;
-    background: rgba(23, 30, 25, 0.92);
+    background: rgba(0, 0, 0, 0.85);
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
@@ -1431,7 +1431,7 @@ img {
 
 .mobile-menu-link:hover,
 .mobile-menu-link:focus {
-    background: #ffe17c;
+    background: #e8e8e8;
     color: #111111;
 }
 
@@ -1484,7 +1484,7 @@ img {
 
 .hero-stats .stat-label {
     margin: 0.35rem 0 0;
-    color: #272727;
+    color: #444444;
     font-size: clamp(0.62rem, 1.2vw, 0.8rem);
     line-height: 1.2;
 }
@@ -1504,7 +1504,7 @@ img {
     flex: 1 1 0;
     min-width: 0;
     height: 8px;
-    background: #171e19;
+    background: #000000;
     border: 2px solid #000000;
     box-shadow: 3px 3px 0 #000000;
     animation: signalPulse 1.8s ease-in-out infinite;
@@ -1517,7 +1517,7 @@ img {
 
 .hero-signal span:nth-child(3) {
     height: 30px;
-    background: #b7c6c2;
+    background: #888888;
     animation-delay: 0.24s;
 }
 
@@ -1528,7 +1528,7 @@ img {
 
 .hero-signal span:nth-child(5) {
     height: 12px;
-    background: #b7c6c2;
+    background: #888888;
     animation-delay: 0.48s;
 }
 
