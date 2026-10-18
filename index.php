@@ -135,17 +135,9 @@ if (empty($services)) {
 
     <!-- HERO SECTION -->
     <section id="hero" class="hero-section">
-        <div class="hero-background">
-            <div class="animated-gradient"></div>
-            <div class="floating-blob blob-1"></div>
-            <div class="floating-blob blob-2"></div>
-            <div class="floating-blob blob-3"></div>
-            <canvas id="particleCanvas"></canvas>
-        </div>
-
         <div class="container-fluid">
-            <div class="row align-items-start align-items-lg-center">
-                <div class="col-lg-6 hero-content">
+            <div class="row align-items-start">
+                <div class="col-12 hero-content">
                     <div class="hero-title">
                         <span class="hero-badge">OXIONEX WEB SOLUTIONS</span>
                         <h1 class="display-1 fw-bold mb-4">
@@ -186,34 +178,6 @@ if (empty($services)) {
                     </div>
                 </div>
 
-                <div class="col-lg-6 hero-visual" id="hero-cards">
-                    <div class="floating-card card-1">
-                        <div class="card-icon">
-                            <i class="fas fa-code"></i>
-                        </div>
-                        <p>Custom Development</p>
-                        <small style="color: var(--gray-text); font-size: 0.85rem; margin-top: 0.5rem; display: block;">Robust & Scalable</small>
-                    </div>
-                    <div class="floating-card card-2">
-                        <div class="card-icon">
-                            <i class="fas fa-paint-brush"></i>
-                        </div>
-                        <p>Modern Design</p>
-                        <small style="color: var(--gray-text); font-size: 0.85rem; margin-top: 0.5rem; display: block;">Stunning UX/UI</small>
-                    </div>
-                    <div class="floating-card card-3">
-                        <div class="card-icon">
-                            <i class="fas fa-rocket"></i>
-                        </div>
-                        <p>Fast Performance</p>
-                        <small style="color: var(--gray-text); font-size: 0.85rem; margin-top: 0.5rem; display: block;">Lightning Quick</small>
-                    </div>
-                    <div class="hero-image-wrapper">
-                        <div class="hero-image-frame">
-                            <img src="assets/images/hero-showcase.svg" alt="Digital Solutions" class="hero-image">
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>

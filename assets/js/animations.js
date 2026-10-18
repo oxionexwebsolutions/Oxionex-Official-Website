@@ -210,32 +210,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Parallax effect on mouse move
-document.addEventListener('DOMContentLoaded', function() {
-    const parallaxElements = document.querySelectorAll('.floating-blob');
-    if (!window.gsap) {
-        return;
-    }
-    
-    document.addEventListener('mousemove', (e) => {
-        const x = e.clientX / window.innerWidth;
-        const y = e.clientY / window.innerHeight;
-
-        parallaxElements.forEach((element, index) => {
-            const moveX = (x - 0.5) * (50 * (index + 1));
-            const moveY = (y - 0.5) * (50 * (index + 1));
-
-            gsap.to(element, {
-                x: moveX,
-                y: moveY,
-                duration: 0.5,
-                ease: "power2.out",
-                overwrite: 'auto'
-            });
-        });
-    });
-});
-
 // Testimonial slider initialization
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof window.Swiper === 'undefined') {
