@@ -1,11 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.php">
-            <span class="navbar-logo-squares">
-                <span class="logo-square sq-1"></span>
-                <span class="logo-square sq-2"></span>
-                <span class="logo-square sq-3"></span>
-            </span>
+            <i class="fas fa-diamond navbar-logo-icon"></i>
             <span class="navbar-brand-text">Oxionex</span>
         </a>
         <button type="button" id="themeToggle" class="theme-toggle-btn ms-auto me-2" aria-label="Toggle dark and light theme" aria-pressed="false">
@@ -54,7 +50,7 @@
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
     <div class="mobile-menu-panel">
         <div class="mobile-menu-header">
-            <span class="mobile-menu-brand">Oxionex</span>
+            <span class="mobile-menu-brand"><i class="fas fa-diamond" style="font-size:1rem; margin-right:6px;"></i>Oxionex</span>
             <button type="button" class="mobile-menu-close" aria-label="Close menu">&times;</button>
         </div>
         <a class="mobile-menu-link" href="index.php#hero">Home</a>

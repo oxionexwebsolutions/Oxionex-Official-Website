@@ -108,7 +108,7 @@ if (empty($services)) {
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css?v=5">
     <link rel="stylesheet" href="assets/css/animations.css?v=5">
-    <link rel="stylesheet" href="assets/css/responsive.css?v=5">
+    <link rel="stylesheet" href="assets/css/responsive.css?v=7">
     <link rel="stylesheet" href="assets/css/cursor-follower.css?v=5">
     <link rel="stylesheet" href="assets/css/project-preview.css?v=5">
     
@@ -175,6 +175,14 @@ if (empty($services)) {
                             <span>Start Your Project</span>
                             <i class="fas fa-star ms-2"></i>
                         </a>
+                    </div>
+
+                    <div class="hero-signal" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </div>
                 </div>
 

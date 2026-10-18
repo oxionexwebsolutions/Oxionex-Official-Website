@@ -573,10 +573,8 @@ nav.navbar {
 }
 
 .navbar-brand-text {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 0;
 }
 
 .theme-toggle-btn {
@@ -1194,6 +1192,22 @@ button, a, .btn, .preview-btn, .theme-toggle-btn {
     border-color: var(--primary-color);
     color: var(--dark-bg);
     transform: scale(1.05);
+}
+
+/* Neo-brutalist filter button hover/active — override gradient with flat black */
+.filter-btn:hover {
+    background: #ffe17c !important;
+    border-color: #000000 !important;
+    color: #000000 !important;
+    transform: translate(4px, 4px);
+    box-shadow: none !important;
+}
+
+.filter-btn.active {
+    background: #000000 !important;
+    border-color: #000000 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
 }
 
 .projects-grid {
@@ -2171,13 +2185,16 @@ nav.navbar {
     font-weight: 700;
 }
 
-.navbar-logo-squares {
-    border: 2px solid #000000;
-    background: #000000;
+.navbar-logo-icon {
+    font-size: 1.3rem;
+    color: #000000;
+    -webkit-text-fill-color: #000000;
+    margin-right: 2px;
 }
 
-.logo-square {
-    background: #ffe17c;
+/* Hide the old CSS-square logo if it ever appears */
+.navbar-logo-squares {
+    display: none;
 }
 
 .navbar-nav .nav-link::after {
