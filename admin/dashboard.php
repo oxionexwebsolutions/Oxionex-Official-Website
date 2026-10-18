@@ -281,6 +281,7 @@ if ($pdo) {
                 <li><a href="project-submissions.php"><i class="fas fa-clipboard-list"></i> Project Submissions</a></li>
                 <li><a href="services.php"><i class="fas fa-tools"></i> Services</a></li>
                 <li><a href="testimonials.php"><i class="fas fa-star"></i> Testimonials</a></li>
+                <li><a href="setup.php"><i class="fas fa-users-cog"></i> Manage Admins</a></li>
                 <li style="margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px;">
                     <?php echo admin_logout_form(); ?>
                 </li>

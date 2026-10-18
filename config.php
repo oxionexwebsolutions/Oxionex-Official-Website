@@ -22,11 +22,11 @@ foreach ($localConfigPaths as $localConfigPath) {
 	}
 }
 
-define('DB_HOST', defined('DB_HOST') ? DB_HOST : '');
-define('DB_USER', defined('DB_USER') ? DB_USER : '');
-define('DB_PASS', defined('DB_PASS') ? DB_PASS : '');
-define('DB_NAME', defined('DB_NAME') ? DB_NAME : '');
-define('DB_PORT', defined('DB_PORT') ? DB_PORT : 3306);
+if (!defined('DB_HOST')) define('DB_HOST', '');
+if (!defined('DB_USER')) define('DB_USER', '');
+if (!defined('DB_PASS')) define('DB_PASS', '');
+if (!defined('DB_NAME')) define('DB_NAME', '');
+if (!defined('DB_PORT')) define('DB_PORT', 3306);
 
 // =============================================================================
 // EMAIL CONFIGURATION
@@ -48,7 +48,7 @@ define('BUSINESS_PHONE', '+91 7048811552');
 define('BUSINESS_WHATSAPP', '+917048811552');
 define('BUSINESS_EMAIL', 'oxionexwebsolutions@gmail.com');
 define('BUSINESS_LOCATION', 'Rajkot, India');
-define('SITE_URL', defined('SITE_URL') ? SITE_URL : 'https://oxionex.com');
+if (!defined('SITE_URL')) define('SITE_URL', 'https://oxionex.com');
 
 // Social media links
 define('SOCIAL_INSTAGRAM', 'https://instagram.com/oxionex');
