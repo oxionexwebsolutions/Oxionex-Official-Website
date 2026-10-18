@@ -44,7 +44,7 @@
                     <a class="nav-link nav-scroll" data-target="#contact" href="index.php#contact">Contact</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-cta" href="start_project.php">Start Project</a>
+                    <a class="btn btn-primary-glow btn-lg" href="start_project.php">Start Project</a>
                 </li>
             </ul>
         </div>

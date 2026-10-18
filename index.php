@@ -106,11 +106,11 @@ if (empty($services)) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/style.css?v=4">
-    <link rel="stylesheet" href="assets/css/animations.css?v=4">
-    <link rel="stylesheet" href="assets/css/responsive.css?v=4">
-    <link rel="stylesheet" href="assets/css/cursor-follower.css?v=4">
-    <link rel="stylesheet" href="assets/css/project-preview.css?v=4">
+    <link rel="stylesheet" href="assets/css/style.css?v=5">
+    <link rel="stylesheet" href="assets/css/animations.css?v=5">
+    <link rel="stylesheet" href="assets/css/responsive.css?v=5">
+    <link rel="stylesheet" href="assets/css/cursor-follower.css?v=5">
+    <link rel="stylesheet" href="assets/css/project-preview.css?v=5">
     
     <title>Oxionex Web Solutions - Premium Web Design & Development</title>
 </head>

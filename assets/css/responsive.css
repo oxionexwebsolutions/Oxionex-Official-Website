@@ -627,6 +627,9 @@ img {
         padding: 0 !important;
         margin: 0 !important;
         border-radius: 50% !important;
+        border: 2px solid #000000 !important;
+        background: #ffffff !important;
+        color: #111111 !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -655,8 +658,8 @@ img {
         height: 36px !important;
         min-width: 36px !important;
         border-radius: 10px;
-        border: 1px solid var(--page-border);
-        background: var(--toggle-bg);
+        border: 2px solid #000000;
+        background: #ffffff;
         display: inline-flex !important;
         flex-direction: column;
         justify-content: center;
@@ -671,7 +674,7 @@ img {
         width: 18px;
         height: 2px;
         border-radius: 999px;
-        background: var(--page-text);
+        background: #111111;
         transition: transform var(--transition-smooth), opacity var(--transition-smooth), width var(--transition-smooth);
     }
 
@@ -1380,7 +1383,7 @@ img {
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
-    background: var(--page-surface);
+    background: #ffffff;
     border-left: 2px solid #000000;
     box-shadow: -8px 0 0 #000000;
 }
@@ -1391,26 +1394,26 @@ img {
     justify-content: space-between;
     padding: 0.5rem 0 1rem;
     margin-bottom: 0.5rem;
-    border-bottom: 2px solid var(--page-border);
+    border-bottom: 2px solid #000000;
 }
 
 .mobile-menu-brand {
     font-weight: 800;
     font-size: 1.1rem;
-    color: var(--page-text);
+    color: #111111;
 }
 
 .mobile-menu-close,
 .mobile-menu-link {
     min-height: 44px;
-    border: 2px solid var(--page-border);
+    border: 2px solid #000000;
     border-radius: 4px;
 }
 
 .mobile-menu-close {
     width: 44px;
-    background: var(--toggle-bg);
-    color: var(--page-text);
+    background: #f0f0f0;
+    color: #111111;
     font-size: 1.6rem;
     line-height: 1;
     cursor: pointer;
@@ -1420,15 +1423,16 @@ img {
     display: flex;
     align-items: center;
     padding: 0.9rem 0.85rem;
-    color: var(--page-text);
+    color: #111111;
     text-decoration: none;
     background: transparent;
+    font-weight: 600;
 }
 
 .mobile-menu-link:hover,
 .mobile-menu-link:focus {
-    background: var(--primary-color);
-    color: #000000;
+    background: #ffe17c;
+    color: #111111;
 }
 
 .mobile-menu[inert] {

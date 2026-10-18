@@ -926,18 +926,22 @@ button, a, .btn, .preview-btn, .theme-toggle-btn {
 
 .card-icon {
     font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.card-icon i {
+    font-size: 2.5rem;
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: var(--spacing-md);
     filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.3));
 }
 
 .floating-card p {
     font-size: 1rem;
     margin: 0;
-    color: var(--light-text);
+    color: #111111;
     font-weight: 500;
 }
 
@@ -1047,12 +1051,16 @@ button, a, .btn, .preview-btn, .theme-toggle-btn {
     align-items: center;
     justify-content: center;
     font-size: 1.6rem;
+    transition: transform var(--transition-smooth);
+    flex-shrink: 0;
+}
+
+.service-icon i {
+    font-size: 1.6rem;
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    transition: transform var(--transition-smooth);
-    flex-shrink: 0;
 }
 
 .service-card:hover .service-icon {
@@ -1385,12 +1393,16 @@ button, a, .btn, .preview-btn, .theme-toggle-btn {
 
 .why-us-icon {
     font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+    display: inline-block;
+}
+
+.why-us-icon i {
+    font-size: 2.5rem;
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: var(--spacing-md);
-    display: inline-block;
 }
 
 .why-us-item h3 {
@@ -1445,8 +1457,12 @@ button, a, .btn, .preview-btn, .theme-toggle-btn {
 
 .quote-icon {
     font-size: 2rem;
-    color: var(--primary-color);
     flex-shrink: 0;
+}
+
+.quote-icon i {
+    color: var(--primary-color);
+    font-size: 2rem;
 }
 
 .client-info {
@@ -1764,8 +1780,12 @@ button, a, .btn, .preview-btn, .theme-toggle-btn {
 
 .contact-icon {
     font-size: 1.8rem;
-    color: var(--primary-color);
     flex-shrink: 0;
+}
+
+.contact-icon i {
+    font-size: 1.8rem;
+    color: var(--primary-color);
 }
 
 .contact-details h4 {
@@ -2090,12 +2110,12 @@ footer ul li {
     --dark-bg: #171e19;
     --darker-bg: #171e19;
     --light-text: #ffffff;
-    --gray-text: #272727;
+    --gray-text: #c8d0cc;
     --page-bg: #ffffff;
     --page-surface: #ffffff;
     --page-surface-strong: #b7c6c2;
-    --page-text: #000000;
-    --page-muted: #272727;
+    --page-text: #111111;
+    --page-muted: #444444;
     --page-border: #000000;
     --nav-bg: #ffe17c;
     --preloader-bg: #ffe17c;
@@ -2123,7 +2143,7 @@ h1, h2, h3, h4, h5, h6,
 .project-info h4,
 footer .logo {
     font-family: var(--font-heading);
-    color: #000000;
+    color: #111111;
     letter-spacing: -0.03em;
 }
 
@@ -2132,7 +2152,7 @@ p,
 .hero-subtitle,
 .project-category,
 .stat-label {
-    color: #272727;
+    color: #444444;
 }
 
 nav.navbar {
@@ -2147,7 +2167,7 @@ nav.navbar {
 .navbar-brand-text,
 .navbar-nav .nav-link,
 .theme-toggle-label {
-    color: #000000;
+    color: #111111 !important;
     font-weight: 700;
 }
 
@@ -2162,6 +2182,11 @@ nav.navbar {
 
 .navbar-nav .nav-link::after {
     background: #000000;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #000000 !important;
+    opacity: 0.7;
 }
 
 .theme-toggle-btn,
@@ -2211,12 +2236,12 @@ nav.navbar {
 .highlight-text,
 .section-title {
     background: none;
-    color: #000000;
-    -webkit-text-fill-color: #000000;
+    color: #111111;
+    -webkit-text-fill-color: #111111;
 }
 
 .gradient-text-secondary {
-    -webkit-text-stroke: 2px #000000;
+    -webkit-text-stroke: 2px #111111;
     color: transparent;
     -webkit-text-fill-color: transparent;
 }
@@ -2298,14 +2323,31 @@ footer :focus-visible {
     backdrop-filter: none;
 }
 
-.floating-card .card-icon,
-.service-icon,
-.why-us-icon,
-.contact-icon {
-    background: #b7c6c2;
-    color: #000000;
-    border: 2px solid #000000;
-    -webkit-text-fill-color: #000000;
+/* ── Neo-brutalist icon overrides: target <i> tags, never the wrapper ── */
+.card-icon i,
+.service-icon i {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    -webkit-text-fill-color: #111111 !important;
+    color: #111111 !important;
+    filter: none;
+}
+
+.why-us-icon i {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    -webkit-text-fill-color: #111111 !important;
+    color: #111111 !important;
+}
+
+.contact-icon i {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    -webkit-text-fill-color: #111111 !important;
+    color: #111111 !important;
 }
 
 .services-section,
@@ -2337,6 +2379,24 @@ footer :focus-visible {
     border-radius: 8px;
     box-shadow: 4px 4px 0 #000000;
     backdrop-filter: none;
+    color: #111111;
+}
+
+.testimonial-card .testimonial-message {
+    color: #333333;
+}
+
+.testimonial-card .client-info p {
+    color: #555555;
+}
+
+.why-us-item h3,
+.why-us-item p {
+    color: #111111;
+}
+
+.why-us-item p {
+    color: #333333;
 }
 
 .service-card:hover,
@@ -2354,15 +2414,20 @@ footer :focus-visible {
     background: transparent;
 }
 
-.service-kicker,
-.service-title-inline,
-.service-arrow,
-.filter-btn {
-    color: #000000;
+.service-arrow {
+    color: #111111;
+    transition: transform var(--transition-smooth);
+    flex-shrink: 0;
+    font-size: 1rem;
+}
+
+.service-arrow i {
+    color: #111111;
+    -webkit-text-fill-color: #111111;
 }
 
 .service-points li {
-    color: #000000;
+    color: #222222;
 }
 
 .service-collapse {
@@ -2384,7 +2449,7 @@ footer :focus-visible {
 
 .project-info h4,
 .project-category {
-    color: #000000;
+    color: #111111;
 }
 
 .filter-btn {
@@ -2435,8 +2500,8 @@ footer {
 .process-section h3,
 footer h5,
 footer .logo {
-    color: #ffffff;
-    -webkit-text-fill-color: #ffffff;
+    color: #ffe17c;
+    -webkit-text-fill-color: #ffe17c;
 }
 
 .process-section .section-subtitle,
@@ -2444,7 +2509,11 @@ footer .logo {
 footer p,
 footer a,
 footer li {
-    color: #b7c6c2;
+    color: #c8d0cc;
+}
+
+footer a:hover {
+    color: #ffe17c;
 }
 
 .process-step h3 {
@@ -2453,14 +2522,17 @@ footer li {
 }
 
 .process-step p {
-    color: #b7c6c2;
+    color: #b0bab6;
 }
 
 .step-number {
-    background: #ffe17c;
-    color: #000000;
-    border: 4px solid #ffe17c;
-    box-shadow: 0 0 0 4px #171e19, 0 0 0 6px #ffe17c;
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    -webkit-text-fill-color: #ffe17c;
+    color: #ffe17c;
+    border: none;
+    box-shadow: none;
 }
 
 .process-timeline::before {
@@ -2478,9 +2550,19 @@ footer li {
     display: none;
 }
 
-.cta-title,
+.cta-title {
+    color: #111111;
+    -webkit-text-fill-color: #111111;
+}
+
 .cta-subtitle {
-    color: #000000;
+    color: #333333;
+    -webkit-text-fill-color: #333333;
+}
+
+.cta-banner p,
+.cta-banner .section-subtitle {
+    color: #333333;
 }
 
 .form-control,
@@ -2489,13 +2571,22 @@ footer li {
 .contact-form select,
 .contact-form textarea {
     background: #ffffff !important;
-    color: #000000 !important;
+    color: #111111 !important;
     border: 2px solid #000000 !important;
     border-radius: 4px !important;
 }
 
 .form-floating > label {
-    color: #272727;
+    color: #444444;
+}
+
+.contact-details h4 {
+    color: #111111;
+}
+
+.contact-details p,
+.contact-details a {
+    color: #333333;
 }
 
 .hp-field {
@@ -2509,11 +2600,27 @@ footer li {
 .social-link {
     background: #272727;
     color: #ffffff;
+    border-color: #555555;
 }
 
 .social-link:hover {
     background: #ffe17c;
     color: #000000;
+    border-color: #000000;
+}
+
+/* Footer social links: visible on dark footer */
+footer .social-links .social-link {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    opacity: 1;
+}
+
+footer .social-links .social-link:hover {
+    background: #ffe17c;
+    color: #000000;
+    border-color: #000000;
 }
 
 footer .footer-bottom {
