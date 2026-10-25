@@ -57,36 +57,23 @@ function oxionex_rate_limit(string $bucket): bool
 
     $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
     $key = hash('sha256', $bucket . '|' . $ip);
-    $directory = defined('LOG_FILE') ? dirname(LOG_FILE) : dirname(__DIR__) . '/../logs';
-    if (!is_dir($directory) && !@mkdir($directory, 0750, true)) {
-        return false;
-    }
 
-    $file = $directory . '/rate-' . $key . '.json';
-    $handle = @fopen($file, 'c+');
-    if (!$handle || !flock($handle, LOCK_EX)) {
-        if (is_resource($handle)) {
-            fclose($handle);
-        }
-        return false;
-    }
+    // Use the session for rate limiting — no filesystem writes needed,
+    // which avoids permission failures on shared/free hosting (e.g. InfinityFree).
+    oxionex_start_secure_session();
 
-    $raw = stream_get_contents($handle);
-    $state = json_decode($raw ?: '', true);
-    $now = time();
-    $window = defined('RATE_LIMIT_WINDOW') ? RATE_LIMIT_WINDOW : 60;
-    $limit = defined('RATE_LIMIT_REQUESTS') ? RATE_LIMIT_REQUESTS : 10;
+    $now    = time();
+    $window = defined('RATE_LIMIT_WINDOW')   ? (int) RATE_LIMIT_WINDOW   : 60;
+    $limit  = defined('RATE_LIMIT_REQUESTS') ? (int) RATE_LIMIT_REQUESTS : 10;
+    $skey   = 'rl_' . $key;
+
+    $state = $_SESSION[$skey] ?? null;
     if (!is_array($state) || ($now - (int) ($state['started'] ?? 0)) >= $window) {
         $state = ['started' => $now, 'count' => 0];
     }
 
     $state['count']++;
-    ftruncate($handle, 0);
-    rewind($handle);
-    fwrite($handle, json_encode($state));
-    fflush($handle);
-    flock($handle, LOCK_UN);
-    fclose($handle);
+    $_SESSION[$skey] = $state;
 
     return $state['count'] <= $limit;
 }

@@ -255,6 +255,8 @@
         if (contactForm.dataset.bound === 'true') return;
         contactForm.dataset.bound = 'true';
 
+        var isSubmitting = false;
+
         // Restore auto-saved data
         try {
             var saved = localStorage.getItem('contactFormData');
@@ -276,12 +278,15 @@
             } catch (e) {}
         }, 500));
 
-        contactForm.addEventListener('submit', async function (e) {
+        contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
-            var name    = (document.getElementById('name') || {}).value || '';
-            var email   = (document.getElementById('email') || {}).value || '';
-            var phone   = (document.getElementById('phone') || {}).value || '';
+            // Hard guard: ignore if a request is already in flight
+            if (isSubmitting) return;
+
+            var name    = (document.getElementById('name')    || {}).value || '';
+            var email   = (document.getElementById('email')   || {}).value || '';
+            var phone   = (document.getElementById('phone')   || {}).value || '';
             var message = (document.getElementById('message') || {}).value || '';
             var isValid = true;
 
@@ -303,22 +308,29 @@
             } else { clearFieldError('message'); }
             if (!isValid) return;
 
-            var formData     = new FormData(this);
-            var submitButton = this.querySelector('button[type="submit"]');
-            var originalText = submitButton.innerHTML;
+            var formData     = new FormData(contactForm);
+            var submitButton = contactForm.querySelector('button[type="submit"]');
+            var originalHTML = submitButton.innerHTML;
 
-            try {
-                submitButton.disabled   = true;
-                submitButton.innerHTML  = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            isSubmitting = true;
+            submitButton.disabled  = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            formMessage.style.display = 'none';
 
-                var response = await fetch('ajax/contact_submit.php', {
-                    method: 'POST',
-                    body:   formData
+            fetch('ajax/contact_submit.php', {
+                method: 'POST',
+                body:   formData
+            })
+            .then(function (response) {
+                // Always parse JSON; a non-2xx status still carries our JSON body
+                return response.json().then(function (data) {
+                    return { ok: response.ok, data: data };
                 });
-                var data = await response.json();
-
+            })
+            .then(function (result) {
+                var data = result.data;
                 formMessage.style.display = 'block';
-                formMessage.innerHTML     = data.message;
+                formMessage.innerHTML     = data.message || 'An unexpected error occurred.';
 
                 if (data.success) {
                     formMessage.classList.remove('alert-danger');
@@ -327,7 +339,6 @@
                     try { localStorage.removeItem('contactFormData'); } catch (err) {}
 
                     gsapFadeIn(formMessage);
-
                     setTimeout(function () {
                         gsapFadeOut(formMessage, function () {
                             formMessage.style.display = 'none';
@@ -337,16 +348,19 @@
                     formMessage.classList.remove('alert-success');
                     formMessage.classList.add('alert-danger');
                 }
-            } catch (error) {
-                console.error('Contact form error:', error);
+            })
+            .catch(function (err) {
+                console.error('Contact form error:', err);
                 formMessage.style.display = 'block';
                 formMessage.classList.remove('alert-success');
                 formMessage.classList.add('alert-danger');
                 formMessage.innerHTML = 'An error occurred. Please try again later.';
-            } finally {
+            })
+            .finally(function () {
+                isSubmitting           = false;
                 submitButton.disabled  = false;
-                submitButton.innerHTML = originalText;
-            }
+                submitButton.innerHTML = originalHTML;
+            });
         });
     }
 
@@ -500,38 +514,9 @@
         // Notifications require an explicit user action; never prompt on load.
     }
 
-    // ─── Statistics (AJAX refresh) ───────────────────────────────
-    async function updateStatistics() {
-        try {
-            var response = await fetch('ajax/get_statistics.php');
-            var data     = await response.json();
-
-            if (!data.success) return;
-
-            var statsContainer = document.querySelector('.hero-stats');
-            if (!statsContainer) return;
-
-            statsContainer.innerHTML = '';
-            data.statistics.forEach(function (stat) {
-                var statItem       = document.createElement('div');
-                statItem.className = 'stat-item';
-                statItem.innerHTML =
-                    '<h3 class="stat-number"><span class="counter">' +
-                    stat.value + '</span>' + (stat.suffix || '') + '</h3>' +
-                    '<p class="stat-label">' + stat.label + '</p>';
-                statsContainer.appendChild(statItem);
-            });
-
-            document.querySelectorAll('.counter').forEach(function (counter) {
-                if (!counter.classList.contains('counted')) {
-                    counter.classList.add('counted');
-                    if (typeof animateCounter === 'function') animateCounter(counter);
-                }
-            });
-        } catch (error) {
-            console.error('Error fetching statistics:', error);
-        }
-    }
+    // ─── Statistics ───────────────────────────────────────────────
+    // Statistics are rendered server-side in index.php.
+    // No AJAX refresh needed on page load.
 
     // ─── Console Greeting ────────────────────────────────────────
     function printConsoleGreeting() {
